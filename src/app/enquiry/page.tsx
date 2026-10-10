@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description:
     'Looking for consistent fresh vegetable supply for your restaurant, catering, or supermarket business? Request custom wholesale quotations from firstQuality.',
 };
+export const instant = false;
 
 export default async function EnquiryPage() {
   const settings = await getSiteSettings();

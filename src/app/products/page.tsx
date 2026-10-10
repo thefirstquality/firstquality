@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description:
     'Discover our full range of farm-fresh Kerala vegetables, hygienic cut veggies, recipe combo kits, and kitchen pantry essentials.',
 };
+export const instant = false;
 
 export default async function ProductsPage() {
   const [settings, categories] = await Promise.all([

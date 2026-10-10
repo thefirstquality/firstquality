@@ -11,7 +11,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ data, benefits }: HeroSectionProps) {
   return (
-    <section className="relative min-h-[92vh] flex flex-col justify-between pt-32 sm:pt-36 pb-12 overflow-hidden bg-gradient-to-b from-[#e8f5ec] via-[#f4faf5] to-white">
+    <section className="relative min-h-[92vh] flex flex-col justify-between pt-32 sm:pt-36 pb-12 overflow-hidden bg-gray-100">
       {/* Background Hero Image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -20,10 +20,11 @@ export function HeroSection({ data, benefits }: HeroSectionProps) {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-right md:object-center opacity-90 sm:opacity-95"
+          className="object-cover object-right md:object-center"
         />
-        {/* Soft gradient overlay to ensure text contrast on left while keeping right image vivid */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent sm:via-white/70 sm:to-transparent" />
+        {/* White gradient ONLY on the content place (left side on desktop, top on mobile) */}
+        <div className="absolute inset-y-0 left-0 w-full md:w-3/5 lg:w-1/2 bg-gradient-to-r from-white via-white/95 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/70 to-transparent md:hidden pointer-events-none" />
       </div>
 
       {/* Main Content Container */}

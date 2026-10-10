@@ -85,14 +85,14 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${inter.variable} h-full scroll-smooth antialiased`}>
+    <html lang="en" className={`${inter.variable} h-full scroll-smooth antialiased`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col font-sans text-gray-900 bg-white">
+      <body className="min-h-full flex flex-col font-sans text-gray-900 bg-white" suppressHydrationWarning>
         {children}
       </body>
     </html>

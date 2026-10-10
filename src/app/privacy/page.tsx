@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Privacy Policy | firstQuality',
   description: 'Privacy Policy and data protection terms for firstQuality customers and partners.',
 };
+export const instant = false;
 
 export default async function PrivacyPage() {
   const settings = await getSiteSettings();

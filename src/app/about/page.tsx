@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   description:
     'Learn how firstQuality bridges Kerala farmers with modern kitchens and businesses through direct partnerships and sustainable practices.',
 };
+export const instant = false;
 
 export default async function AboutPage() {
   const [settings, about, features, sourcing, pillars] = await Promise.all([

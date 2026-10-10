@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Terms & Conditions | firstQuality',
   description: 'Terms and conditions governing fresh vegetable supply, wholesale orders, and service usage with firstQuality.',
 };
+export const instant = false;
 
 export default async function TermsPage() {
   const settings = await getSiteSettings();

@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   description:
     'Explore our network of local Kerala farms, view authentic harvesting footage, and understand our ethical farmer partnerships.',
 };
+export const instant = false;
 
 export default async function FarmsPage() {
   const [settings, videos] = await Promise.all([

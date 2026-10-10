@@ -25,6 +25,7 @@ import { FarmsSection } from '@/components/home/FarmsSection';
 import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { CtaBanner } from '@/components/home/CtaBanner';
 
+export const instant = false;
 
 export default async function HomePage() {
   const [

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description:
     'Contact firstQuality for fresh vegetable sourcing inquiries, restaurant orders, farmer partnerships, or customer assistance.',
 };
+export const instant = false;
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();

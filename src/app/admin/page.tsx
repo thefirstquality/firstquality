@@ -8,6 +8,7 @@ import {
 } from '@/services/contentService';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
+export const instant = false;
 
 export default async function AdminDashboardPage() {
   const [categories, videos, testimonials] = await Promise.all([
