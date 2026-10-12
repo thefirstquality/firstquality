@@ -63,24 +63,24 @@ export function AboutSection({ data, features }: AboutSectionProps) {
 
         {/* 4 Feature Cards Below */}
         {features && features.length > 0 && (
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-12 sm:mt-16 grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
             {features.map((card) => (
               <div
                 key={card.id}
-                className="p-6 rounded-xl border border-gray-100 bg-[#fbfdfb] hover:bg-white hover:shadow-md transition-all duration-200 flex flex-col justify-start"
+                className="p-4 sm:p-6 rounded-xl border border-gray-100 bg-[#fbfdfb] hover:bg-white hover:shadow-md transition-all duration-200 flex flex-col justify-start"
               >
-                <div className="w-10 h-10 rounded-lg bg-emerald-100/60 text-[#15803d] flex items-center justify-center mb-4">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-emerald-100/60 text-[#15803d] flex items-center justify-center mb-3 sm:mb-4">
                   <IconRenderer
                     iconUrl={card.icon_url}
                     iconName={card.icon_name}
-                    className="w-5 h-5 text-[#15803d]"
+                    className="w-4 h-4 sm:w-5 sm:h-5 text-[#15803d]"
                     alt={card.title}
                   />
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-1.5">
+                <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1 sm:mb-1.5">
                   {card.title}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
                   {card.description}
                 </p>
               </div>

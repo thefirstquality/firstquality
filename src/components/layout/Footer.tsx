@@ -10,39 +10,8 @@ interface FooterProps {
 }
 
 export function Footer({ settings }: FooterProps) {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes('@')) {
-      setErrorMessage('Please enter a valid email address');
-      setStatus('error');
-      return;
-    }
-
-    try {
-      setStatus('loading');
-      const res = await fetch('/api/newsletter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to subscribe');
-      }
-
-      setStatus('success');
-      setEmail('');
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Subscription failed';
-      setErrorMessage(msg);
-      setStatus('error');
-    }
-  };
+  const [quickLinksOpen, setQuickLinksOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
 
   const address = settings?.address || 'Vyppinrick, Kerala, India';
   const phone = settings?.phone || '+91 98765 43100';
@@ -50,7 +19,9 @@ export function Footer({ settings }: FooterProps) {
   const footerDescription =
     settings?.footer_description ||
     'Fresh vegetables, quality first. We work directly with local farmers to bring fresh and nutritious produce to homes, retailers and businesses across Kerala.';
-  const copyrightText = settings?.copyright_text || '© 2024 firstQuality. All rights reserved.';
+  const copyrightText =
+    settings?.copyright_text?.replace('2024', '2026') ||
+    '© 2026 firstQuality. All rights reserved.';
 
   return (
     <footer className="bg-[#0b2f1f] text-gray-300 pt-16 pb-10 border-t border-emerald-950">
@@ -66,10 +37,31 @@ export function Footer({ settings }: FooterProps) {
 
           {/* Col 2: Quick Links (2 cols on lg) */}
           <div className="lg:col-span-2">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
-              Quick Links
-            </h3>
-            <ul className="space-y-2.5 text-sm">
+            <button
+              type="button"
+              onClick={() => setQuickLinksOpen(!quickLinksOpen)}
+              className="w-full flex items-center justify-between md:cursor-default md:pointer-events-none text-left text-sm font-bold text-white uppercase tracking-wider mb-2 md:mb-4 py-2 md:py-0 border-b border-emerald-900/60 md:border-b-0"
+              aria-expanded={quickLinksOpen}
+            >
+              <span>Quick Links</span>
+              <span className="md:hidden text-green-400">
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    quickLinksOpen ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                </svg>
+              </span>
+            </button>
+            <ul
+              className={`space-y-2.5 text-sm ${
+                quickLinksOpen ? 'block pb-3' : 'hidden md:block'
+              }`}
+            >
               <li>
                 <Link href="/" className="hover:text-green-400 transition-colors">
                   Home
@@ -98,12 +90,33 @@ export function Footer({ settings }: FooterProps) {
             </ul>
           </div>
 
-          {/* Col 3: Our Products (2 cols on lg) */}
-          <div className="lg:col-span-2">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
-              Our Products
-            </h3>
-            <ul className="space-y-2.5 text-sm">
+          {/* Col 3: Our Products (3 cols on lg) */}
+          <div className="lg:col-span-3">
+            <button
+              type="button"
+              onClick={() => setProductsOpen(!productsOpen)}
+              className="w-full flex items-center justify-between md:cursor-default md:pointer-events-none text-left text-sm font-bold text-white uppercase tracking-wider mb-2 md:mb-4 py-2 md:py-0 border-b border-emerald-900/60 md:border-b-0"
+              aria-expanded={productsOpen}
+            >
+              <span>Our Products</span>
+              <span className="md:hidden text-green-400">
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    productsOpen ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                </svg>
+              </span>
+            </button>
+            <ul
+              className={`space-y-2.5 text-sm ${
+                productsOpen ? 'block pb-3' : 'hidden md:block'
+              }`}
+            >
               <li>
                 <Link href="/products/fresh-vegetables" className="hover:text-green-400 transition-colors">
                   Fresh Vegetables
@@ -127,8 +140,8 @@ export function Footer({ settings }: FooterProps) {
             </ul>
           </div>
 
-          {/* Col 4: Contact Us (2 cols on lg) */}
-          <div className="lg:col-span-2">
+          {/* Col 4: Contact Us (3 cols on lg) */}
+          <div className="lg:col-span-3">
             <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
               Contact Us
             </h3>
@@ -206,58 +219,22 @@ export function Footer({ settings }: FooterProps) {
               </a>
             </div>
           </div>
-
-          {/* Col 5: Subscribe for Updates (2 cols on lg) */}
-          <div className="lg:col-span-2">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
-              Subscribe for Updates
-            </h3>
-            <p className="text-sm text-gray-300 mb-3">
-              Get the latest updates on our products and farm activities.
-            </p>
-            <form onSubmit={handleSubscribe} className="space-y-2">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email address"
-                required
-                className="w-full px-3.5 py-2.5 rounded-lg text-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
-              />
-              <button
-                type="submit"
-                disabled={status === 'loading'}
-                className="w-full px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534] active:scale-98 transition-all disabled:opacity-50"
-              >
-                {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
-              </button>
-            </form>
-
-            {status === 'success' && (
-              <p className="text-xs text-green-400 mt-2 font-medium">
-                ✓ Thank you for subscribing!
-              </p>
-            )}
-            {status === 'error' && (
-              <p className="text-xs text-rose-400 mt-2 font-medium">
-                {errorMessage}
-              </p>
-            )}
-          </div>
         </div>
 
-        {/* Bottom copyright & legal bar */}
+        {/* Bottom copyright & credits bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
           <p>{copyrightText}</p>
-          <div className="flex items-center space-x-6">
-            <Link href="/privacy" className="hover:text-green-400 transition-colors">
-              Privacy Policy
-            </Link>
-            <span>|</span>
-            <Link href="/terms" className="hover:text-green-400 transition-colors">
-              Terms & Conditions
-            </Link>
-          </div>
+          <p className="text-xs text-gray-400">
+            Crafted by{' '}
+            <a
+              href="https://www.ekodrix.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-emerald-400 hover:text-green-300 font-semibold transition-colors underline underline-offset-4 decoration-emerald-500/50 hover:decoration-green-300"
+            >
+              Ekodrix
+            </a>
+          </p>
         </div>
       </div>
     </footer>

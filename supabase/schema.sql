@@ -9,7 +9,7 @@ create table if not exists site_settings (
   id uuid primary key default uuid_generate_v4(),
   site_name text not null default 'firstQuality',
   tagline text default 'Fresh Vegetables, Better Living.',
-  logo_url text default '/images/logo.svg',
+  logo_url text default '/images/logo.png',
   logo_public_id text,
   phone text default '+91 98765 43100',
   whatsapp_number text default '919876543100',
@@ -21,7 +21,7 @@ create table if not exists site_settings (
   youtube_url text default 'https://youtube.com/firstquality',
   whatsapp_url text default 'https://wa.me/919876543100',
   footer_description text default 'Fresh vegetables, quality first. We work directly with local farmers to bring fresh and nutritious produce to homes, retailers and businesses across Kerala.',
-  copyright_text text default '© 2024 firstQuality. All rights reserved.',
+  copyright_text text default '© 2026 firstQuality. All rights reserved.',
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
