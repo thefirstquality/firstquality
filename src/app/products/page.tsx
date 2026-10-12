@@ -1,22 +1,28 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { getSiteSettings, getProductCategories } from '@/services/contentService';
+import {
+  getSiteSettings,
+  getProductCategories,
+  getProducts,
+} from '@/services/contentService';
+import { ProductsCatalogClient } from '@/components/products/ProductsCatalogClient';
 
 export const metadata: Metadata = {
   title: 'Our Products | Fresh and Quality Produce',
   description:
     'Discover our full range of farm-fresh Kerala vegetables, hygienic cut veggies, recipe combo kits, and kitchen pantry essentials.',
 };
+
 export const instant = false;
 
 export default async function ProductsPage() {
-  const [settings, categories] = await Promise.all([
+  const [settings, categories, products] = await Promise.all([
     getSiteSettings(),
     getProductCategories(),
+    getProducts(),
   ]);
 
   return (
@@ -25,12 +31,12 @@ export default async function ProductsPage() {
 
       <main className="flex-1 pt-28">
         {/* Banner */}
-        <div className="py-16 bg-gradient-to-b from-[#eaf6ee] to-white border-b border-gray-100">
+        <div className="py-14 bg-gradient-to-b from-[#eaf6ee] to-white border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <span className="text-xs sm:text-sm font-bold tracking-widest text-[#15803d] uppercase">
               OUR PRODUCE CATALOG
             </span>
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight mt-2 mb-3">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mt-2 mb-3">
               Fresh and Quality Produce
             </h1>
             <div className="w-14 h-1 bg-[#f97316] rounded-full mb-4" />
@@ -40,48 +46,17 @@ export default async function ProductsPage() {
           </div>
         </div>
 
-        {/* Categories Grid */}
-        <section className="py-20 bg-white">
+        {/* Products Catalog Section */}
+        <section className="py-12 bg-[#fbfdfb]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {categories.map((cat) => (
-                <div
-                  key={cat.id}
-                  className="group rounded-3xl overflow-hidden border border-gray-100 bg-[#fbfdfb] hover:bg-white hover:shadow-2xl transition-all duration-300 flex flex-col"
-                >
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
-                    <Image
-                      src={cat.image_url}
-                      alt={cat.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-
-                  <div className="p-6 flex flex-col flex-1">
-                    <h2 className="text-xl font-bold text-gray-900 group-hover:text-[#15803d] transition-colors mb-2">
-                      {cat.name}
-                    </h2>
-                    <p className="text-sm text-gray-600 leading-relaxed mb-6 flex-1">
-                      {cat.short_description}
-                    </p>
-
-                    <div className="pt-2">
-                      <Link
-                        href={`/products/${cat.slug}`}
-                        className="inline-flex items-center justify-center w-full px-5 py-2.5 rounded-xl text-sm font-semibold text-[#15803d] bg-emerald-50 hover:bg-[#15803d] hover:text-white transition-all duration-200"
-                      >
-                        Explore Category →
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <ProductsCatalogClient
+              products={products}
+              categories={categories}
+              whatsappNumber={settings.whatsapp_number}
+            />
 
             {/* Quick Bulk Order Box */}
-            <div className="mt-20 p-8 sm:p-12 rounded-3xl bg-[#0b2f1f] text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
+            <div className="mt-16 p-8 sm:p-12 rounded-3xl bg-[#0b2f1f] text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
               <div>
                 <span className="text-xs font-bold text-green-400 uppercase tracking-widest">
                   COMMERCIAL & WHOLESALE SOURCING

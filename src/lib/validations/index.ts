@@ -20,7 +20,7 @@ export type NewsletterFormValues = z.infer<typeof newsletterSchema>;
 export const productCategorySchema = z.object({
   name: z.string().min(2, 'Category name is required'),
   slug: z.string().min(2, 'Slug is required'),
-  short_description: z.string().min(5, 'Short description is required'),
+  short_description: z.string().optional(),
   full_description: z.string().optional(),
   image_url: z.string().min(1, 'Category image is required'),
   image_public_id: z.string().optional(),

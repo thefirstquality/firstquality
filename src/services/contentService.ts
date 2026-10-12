@@ -8,6 +8,7 @@ import type {
   StatisticItem,
   WhyChooseItem,
   ProductCategory,
+  ProductItem,
   SourcingPhilosophyData,
   SourcingPillar,
   FarmVideoItem,
@@ -22,6 +23,7 @@ import {
   DEFAULT_STATISTICS,
   DEFAULT_WHY_CHOOSE,
   DEFAULT_CATEGORIES,
+  DEFAULT_PRODUCTS,
   DEFAULT_SOURCING,
   DEFAULT_SOURCING_PILLARS,
   DEFAULT_FARM_VIDEOS,
@@ -142,6 +144,46 @@ export async function getProductCategories(): Promise<ProductCategory[]> {
 export async function getCategoryBySlug(slug: string): Promise<ProductCategory | null> {
   const categories = await getProductCategories();
   return categories.find((c) => c.slug === slug) || null;
+}
+
+export async function getProducts(): Promise<ProductItem[]> {
+  const supabase = await createServerSupabaseClient();
+  if (!supabase) return DEFAULT_PRODUCTS;
+
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('is_published', true)
+      .order('sort_order', { ascending: true });
+    if (error || !data || data.length === 0) return DEFAULT_PRODUCTS;
+    return data;
+  } catch {
+    return DEFAULT_PRODUCTS;
+  }
+}
+
+export async function getProductsByCategory(categoryIdentifier: string): Promise<ProductItem[]> {
+  const allProducts = await getProducts();
+  const allCategories = await getProductCategories();
+
+  // Find category to get both ID and slug
+  const matchedCat = allCategories.find(
+    (c) => c.id === categoryIdentifier || c.slug === categoryIdentifier
+  );
+
+  if (!matchedCat) {
+    return allProducts.filter((p) => p.category_id === categoryIdentifier);
+  }
+
+  return allProducts.filter(
+    (p) => p.category_id === matchedCat.id || p.category_id === matchedCat.slug
+  );
+}
+
+export async function getProductBySlug(slug: string): Promise<ProductItem | null> {
+  const products = await getProducts();
+  return products.find((p) => p.slug === slug) || null;
 }
 
 export async function getSourcingPhilosophy(): Promise<SourcingPhilosophyData> {
