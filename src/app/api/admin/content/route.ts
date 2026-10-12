@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
 // Tables allowed for Admin CRUD operations
@@ -80,6 +81,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    try {
+      revalidatePath('/');
+    } catch {
+      // Revalidation may fail silently in non-cached contexts
+    }
+
     return NextResponse.json({ success: true, data: inserted });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Server error';
@@ -105,14 +112,40 @@ export async function PUT(request: Request) {
       });
     }
 
-    let query = admin.from(table).update(data);
-    if (id) {
-      query = query.eq('id', id);
+    let targetId = id;
+
+    // For single-row configuration tables, auto-fallback to existing record or insert if empty
+    if (!targetId && ['hero_section', 'site_settings', 'about_section', 'sourcing_philosophy'].includes(table)) {
+      const { data: existing } = await admin.from(table).select('id').limit(1);
+      if (existing && existing.length > 0) {
+        targetId = existing[0].id;
+      } else {
+        const { data: inserted, error: insertErr } = await admin.from(table).insert(data).select().single();
+        if (insertErr) {
+          return NextResponse.json({ error: insertErr.message }, { status: 500 });
+        }
+        try {
+          revalidatePath('/');
+        } catch {
+          // ignore
+        }
+        return NextResponse.json({ success: true, data: [inserted] });
+      }
     }
 
-    const { data: updated, error } = await query.select();
+    if (!targetId) {
+      return NextResponse.json({ error: 'Record ID is required for update' }, { status: 400 });
+    }
+
+    const { data: updated, error } = await admin.from(table).update(data).eq('id', targetId).select();
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    try {
+      revalidatePath('/');
+    } catch {
+      // ignore
     }
 
     return NextResponse.json({ success: true, data: updated });
