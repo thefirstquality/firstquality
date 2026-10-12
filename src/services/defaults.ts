@@ -17,7 +17,7 @@ import type {
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   site_name: 'firstQuality',
   tagline: 'Fresh Vegetables, Better Living.',
-  logo_url: '/images/logo.svg',
+  logo_url: '/images/logo.png',
   phone: '+91 98765 43100',
   whatsapp_number: '919876543100',
   email: 'info@firstquality.in',
@@ -28,7 +28,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   youtube_url: 'https://youtube.com/firstquality',
   whatsapp_url: 'https://wa.me/919876543100',
   footer_description: 'Fresh vegetables, quality first. We work directly with local farmers to bring fresh and nutritious produce to homes, retailers and businesses across Kerala.',
-  copyright_text: '© 2024 firstQuality. All rights reserved.',
+  copyright_text: '© 2026 firstQuality. All rights reserved.',
 };
 
 export const DEFAULT_HERO: HeroSectionData = {

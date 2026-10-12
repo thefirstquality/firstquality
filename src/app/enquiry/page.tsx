@@ -56,16 +56,23 @@ export default async function EnquiryPage() {
         </div>
 
         {/* B2B Value Highlights */}
-        <section className="py-12 bg-[#f8faf8] border-b border-gray-200/50">
+        <section className="py-8 sm:py-12 bg-[#f8faf8] border-b border-gray-200/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
               {b2bBenefits.map((item, i) => (
-                <div key={i} className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-100 text-[#15803d] flex items-center justify-center font-bold text-sm mb-3">
+                <div
+                  key={i}
+                  className="p-4 sm:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm flex flex-col justify-start"
+                >
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-100 text-[#15803d] flex items-center justify-center font-bold text-xs sm:text-sm mb-2.5 sm:mb-3">
                     {i + 1}
                   </div>
-                  <h3 className="text-base font-bold text-gray-900 mb-1">{item.title}</h3>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1 leading-snug">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                    {item.desc}
+                  </p>
                 </div>
               ))}
             </div>
