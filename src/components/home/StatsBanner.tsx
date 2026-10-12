@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Image from 'next/image';
 import type { StatisticItem } from '@/types';
@@ -11,11 +12,11 @@ export function StatsBanner({ stats }: StatsBannerProps) {
   if (!stats || stats.length === 0) return null;
 
   return (
-    <section className="relative py-5 sm:py-6 bg-[#0b2f1f] text-white overflow-hidden">
-      {/* Subtle leaf texture overlay */}
-      <div className="absolute inset-0 opacity-10 mix-blend-overlay pointer-events-none">
+    <section className="relative py-20 sm:py-20 overflow-hidden text-white">
+      {/* Background image - add your image path later */}
+      <div className="absolute inset-0 pointer-events-none">
         <Image
-          src="/images/leaf-texture-bg.jpg"
+          src="https://res.cloudinary.com/of7drqjl/image/upload/v1791817114/Lush_Dewy_Foliage_Banner.png"
           alt=""
           fill
           className="object-cover"
