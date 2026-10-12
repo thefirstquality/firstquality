@@ -8,6 +8,7 @@ import {
   getStatistics,
   getWhyChooseItems,
   getProductCategories,
+  getProducts,
   getSourcingPhilosophy,
   getSourcingPillars,
   getFarmVideos,
@@ -37,6 +38,7 @@ export default async function HomePage() {
     stats,
     whyChoose,
     categories,
+    products,
     sourcing,
     sourcingPillars,
     videos,
@@ -50,6 +52,7 @@ export default async function HomePage() {
     getStatistics(),
     getWhyChooseItems(),
     getProductCategories(),
+    getProducts(),
     getSourcingPhilosophy(),
     getSourcingPillars(),
     getFarmVideos(),
@@ -76,7 +79,11 @@ export default async function HomePage() {
         <WhyChooseSection items={whyChoose} />
 
         {/* 5. Our Products Section */}
-        <ProductsSection categories={categories} />
+        <ProductsSection
+          products={products}
+          categories={categories}
+          whatsappNumber={settings.whatsapp_number}
+        />
 
         {/* 6. Our Sourcing Philosophy */}
         <SourcingSection data={sourcing} pillars={sourcingPillars} />

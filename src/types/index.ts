@@ -99,7 +99,7 @@ export interface ProductCategory {
   id: string;
   slug: string;
   name: string;
-  short_description: string;
+  short_description?: string;
   full_description?: string;
   image_url: string;
   image_public_id?: string;

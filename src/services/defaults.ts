@@ -7,6 +7,7 @@ import type {
   StatisticItem,
   WhyChooseItem,
   ProductCategory,
+  ProductItem,
   SourcingPhilosophyData,
   SourcingPillar,
   FarmVideoItem,
@@ -82,48 +83,9 @@ export const DEFAULT_WHY_CHOOSE: WhyChooseItem[] = [
   { id: '4', title: 'Reliable Supply', description: 'Consistent supply for retail, wholesale and business needs.', icon_name: 'truck', sort_order: 4 },
 ];
 
-export const DEFAULT_CATEGORIES: ProductCategory[] = [
-  {
-    id: 'cat-1',
-    slug: 'fresh-vegetables',
-    name: 'Fresh Vegetables',
-    short_description: 'A wide range of farm fresh vegetables sourced from Kerala farmers.',
-    full_description: 'Locally grown seasonal vegetables harvested at sunrise, graded for prime freshness, and delivered within hours.',
-    image_url: '/images/cat-fresh-vegetables.jpg',
-    sort_order: 1,
-    is_published: true,
-  },
-  {
-    id: 'cat-2',
-    slug: 'fresh-cut-vegetables',
-    name: 'Fresh-Cut Vegetables',
-    short_description: 'Cleaned, cut and ready for cooking. Ideal for homes, restaurants and caterers.',
-    full_description: 'Hygienically sorted, washed, cut, and packed in moisture-controlled conditions to preserve shelf-life and reduce kitchen prep time.',
-    image_url: '/images/cat-fresh-cut.jpg',
-    sort_order: 2,
-    is_published: true,
-  },
-  {
-    id: 'cat-3',
-    slug: 'vegetable-combo-kits',
-    name: 'Vegetable Combo Kits',
-    short_description: 'Daily and weekly vegetable combo kits for convenient ordering.',
-    full_description: 'Pre-portioned recipe kits including Sambar Kits, Avial Sets, Salad Boxes, and Weekly Family Ration Bundles.',
-    image_url: '/images/cat-combo-kit.jpg',
-    sort_order: 3,
-    is_published: true,
-  },
-  {
-    id: 'cat-4',
-    slug: 'kitchen-essentials',
-    name: 'Kitchen Essentials',
-    short_description: 'Milk, fresh curd, spices, masalas, flour and more everyday essentials.',
-    full_description: 'Traditional kitchen staples sourced with the same stringent quality checks: farm dairy, stone ground spices, and essential staples.',
-    image_url: '/images/cat-kitchen-essentials.jpg',
-    sort_order: 4,
-    is_published: true,
-  },
-];
+export const DEFAULT_CATEGORIES: ProductCategory[] = [];
+
+export const DEFAULT_PRODUCTS: ProductItem[] = [];
 
 export const DEFAULT_SOURCING: SourcingPhilosophyData = {
   heading: 'Our Sourcing Philosophy',

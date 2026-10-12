@@ -111,7 +111,7 @@ create table if not exists product_categories (
   id uuid primary key default uuid_generate_v4(),
   slug text unique not null,
   name text not null,
-  short_description text not null,
+  short_description text default '',
   full_description text,
   image_url text not null,
   image_public_id text,
