@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import {
   getProductCategories,
+  getProducts,
   getFarmVideos,
   getTestimonials,
 } from '@/services/contentService';
@@ -11,8 +12,9 @@ import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 export const instant = false;
 
 export default async function AdminDashboardPage() {
-  const [categories, videos, testimonials] = await Promise.all([
+  const [categories, products, videos, testimonials] = await Promise.all([
     getProductCategories(),
+    getProducts(),
     getFarmVideos(),
     getTestimonials(),
   ]);
@@ -61,7 +63,7 @@ export default async function AdminDashboardPage() {
               Welcome to firstQuality CMS
             </h1>
             <p className="text-sm text-emerald-100 max-w-xl">
-              Manage website sections, edit product catalogs, update farm documentary footage, and monitor incoming business supply enquiries.
+              Manage website sections, create and organize product categories & items, update farm documentary footage, and monitor incoming business supply enquiries.
             </p>
           </div>
 
@@ -76,12 +78,12 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* System Health Indicators */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* System Health Indicators & Counts */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-between">
             <div>
               <div className="text-xs font-semibold text-gray-400 uppercase">Supabase DB</div>
-              <div className="text-base font-bold text-gray-900 mt-1">
+              <div className="text-sm font-bold text-gray-900 mt-1">
                 {isSupabaseConfigured ? 'Connected' : 'Baseline Active'}
               </div>
             </div>
@@ -95,7 +97,7 @@ export default async function AdminDashboardPage() {
           <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-between">
             <div>
               <div className="text-xs font-semibold text-gray-400 uppercase">Cloudinary CDN</div>
-              <div className="text-base font-bold text-gray-900 mt-1">
+              <div className="text-sm font-bold text-gray-900 mt-1">
                 {isCloudinaryConfigured ? 'Configured' : 'Local Fallback'}
               </div>
             </div>
@@ -106,31 +108,76 @@ export default async function AdminDashboardPage() {
             />
           </div>
 
-          <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-between">
+          <Link
+            href="/admin/categories"
+            className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between group"
+          >
             <div>
-              <div className="text-xs font-semibold text-gray-400 uppercase">Categories</div>
+              <div className="text-xs font-semibold text-gray-400 uppercase group-hover:text-[#15803d]">Categories</div>
               <div className="text-xl font-bold text-gray-900 mt-1">
                 {categories.length}
               </div>
             </div>
-            <span className="text-xl">🥦</span>
-          </div>
+            <span className="text-xl">📁</span>
+          </Link>
 
-          <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-between">
+          <Link
+            href="/admin/products"
+            className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between group"
+          >
             <div>
-              <div className="text-xs font-semibold text-gray-400 uppercase">Total Enquiries</div>
+              <div className="text-xs font-semibold text-gray-400 uppercase group-hover:text-[#15803d]">Products</div>
+              <div className="text-xl font-bold text-gray-900 mt-1">
+                {products.length}
+              </div>
+            </div>
+            <span className="text-xl">🥦</span>
+          </Link>
+
+          <Link
+            href="/admin/enquiries"
+            className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between group"
+          >
+            <div>
+              <div className="text-xs font-semibold text-gray-400 uppercase group-hover:text-[#15803d]">Enquiries</div>
               <div className="text-xl font-bold text-gray-900 mt-1">
                 {enquiriesCount}
               </div>
             </div>
             <span className="text-xl">📬</span>
-          </div>
+          </Link>
         </div>
 
         {/* Quick Management Cards */}
         <div>
           <h2 className="text-lg font-bold text-gray-900 mb-4">Content Modules</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link
+              href="/admin/categories"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+            >
+              <div className="text-2xl mb-2">📁</div>
+              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                Product Categories ({categories.length})
+              </h3>
+              <p className="text-xs text-gray-500 mt-1">
+                Manage high-level produce categories (Fresh Vegetables, Fresh-Cut, Combo Kits, Kitchen Essentials).
+              </p>
+            </Link>
+
+            <Link
+              href="/admin/products"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+            >
+              <div className="text-2xl mb-2">🥦</div>
+              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                Produce & Products Catalog ({products.length})
+              </h3>
+              <p className="text-xs text-gray-500 mt-1">
+                Create & update vegetable items, pricing, units, descriptions, and stock availability.
+              </p>
+            </Link>
+
             <Link
               href="/admin/hero"
               className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
@@ -158,15 +205,41 @@ export default async function AdminDashboardPage() {
             </Link>
 
             <Link
-              href="/admin/products"
+              href="/admin/statistics"
               className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
             >
-              <div className="text-2xl mb-2">🥦</div>
+              <div className="text-2xl mb-2">📈</div>
               <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Product Categories & Items
+                Key Statistics
               </h3>
               <p className="text-xs text-gray-500 mt-1">
-                Manage fresh vegetables, cut vegetables, combo kits, and essentials.
+                Update customer counts, farmer network numbers, and service regions.
+              </p>
+            </Link>
+
+            <Link
+              href="/admin/why-choose"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+            >
+              <div className="text-2xl mb-2">✨</div>
+              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                Why Choose Us Pillars
+              </h3>
+              <p className="text-xs text-gray-500 mt-1">
+                Manage 4 value proposition cards displayed across landing pages.
+              </p>
+            </Link>
+
+            <Link
+              href="/admin/sourcing"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+            >
+              <div className="text-2xl mb-2">🌱</div>
+              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                Sourcing Philosophy
+              </h3>
+              <p className="text-xs text-gray-500 mt-1">
+                Manage farmer partnership principles and field supervision guidelines.
               </p>
             </Link>
 
@@ -176,10 +249,10 @@ export default async function AdminDashboardPage() {
             >
               <div className="text-2xl mb-2">🎬</div>
               <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Farm Videos
+                Farm Videos ({videos.length})
               </h3>
               <p className="text-xs text-gray-500 mt-1">
-                Manage harvest video thumbnails, play URLs, and duration tags ({videos.length} videos).
+                Manage harvest video thumbnails, play URLs, and duration tags.
               </p>
             </Link>
 
@@ -189,10 +262,10 @@ export default async function AdminDashboardPage() {
             >
               <div className="text-2xl mb-2">💬</div>
               <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Customer Testimonials
+                Customer Testimonials ({testimonials.length})
               </h3>
               <p className="text-xs text-gray-500 mt-1">
-                Manage quotes, restaurant owner avatars, and customer roles ({testimonials.length} reviews).
+                Manage quotes, restaurant owner avatars, and customer roles.
               </p>
             </Link>
 
@@ -206,6 +279,19 @@ export default async function AdminDashboardPage() {
               </h3>
               <p className="text-xs text-gray-500 mt-1">
                 Upload image assets with 4MB validation and 2MB compression assistant.
+              </p>
+            </Link>
+
+            <Link
+              href="/admin/settings"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+            >
+              <div className="text-2xl mb-2">⚙️</div>
+              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                Site Settings & DB Connection
+              </h3>
+              <p className="text-xs text-gray-500 mt-1">
+                Configure brand name, phone, WhatsApp number, and addresses.
               </p>
             </Link>
           </div>

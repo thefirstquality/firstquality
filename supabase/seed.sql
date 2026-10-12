@@ -85,14 +85,6 @@ insert into why_choose_items (title, description, icon_name, sort_order) values
 ('Reliable Supply', 'Consistent supply for retail, wholesale and business needs.', 'truck', 4)
 on conflict do nothing;
 
--- Product Categories (4 items)
-insert into product_categories (slug, name, short_description, full_description, image_url, sort_order, is_published) values
-('fresh-vegetables', 'Fresh Vegetables', 'A wide range of farm fresh vegetables sourced from Kerala farmers.', 'Direct harvest from verified Kerala farmer clusters. Picked at peak maturity, sorted with care, and delivered fresh to maintain crispness and vital nutrition.', '/images/cat-fresh-vegetables.jpg', 1, true),
-('fresh-cut-vegetables', 'Fresh-Cut Vegetables', 'Cleaned, cut and ready for cooking. Ideal for homes, restaurants and caterers.', 'Hygienically washed in ozonated water, precisely diced, grated, and sliced in temperature-controlled prep units. Saves prep time for commercial kitchens and busy families.', '/images/cat-fresh-cut.jpg', 2, true),
-('vegetable-combo-kits', 'Vegetable Combo Kits', 'Daily and weekly vegetable combo kits for convenient ordering.', 'Balanced assortments tailored for regional recipes: Sambar kit, Avial kit, Salad mix, and Weekly Family Ration boxes curated for peak seasonal variety.', '/images/cat-combo-kit.jpg', 3, true),
-('kitchen-essentials', 'Kitchen Essentials', 'Milk, fresh curd, spices, masalas, flour and more everyday essentials.', 'Complementary daily essentials sourced from certified local dairy co-operatives, pure stone-ground spices, cold-pressed oils, and traditional staples.', '/images/cat-kitchen-essentials.jpg', 4, true)
-on conflict do nothing;
-
 -- Sourcing Philosophy
 insert into sourcing_philosophy (heading, description, cta_text, cta_url, is_published) values (
   'Our Sourcing Philosophy',

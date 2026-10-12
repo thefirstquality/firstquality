@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
-import Image from 'next/image';
+import React, { useState, useRef, useEffect } from 'react';
 import imageCompression from 'browser-image-compression';
 
 interface ImageUploadFieldProps {
@@ -19,8 +18,10 @@ export function ImageUploadField({
   folder = 'firstquality',
   className = '',
 }: ImageUploadFieldProps) {
+  // Use regular img tag — next/image cannot display blob: URLs (local preview)
   const [preview, setPreview] = useState<string | null>(value || null);
   const [uploading, setUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   const [compressing, setCompressing] = useState(false);
   const [progress, setProgress] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
@@ -28,13 +29,21 @@ export function ImageUploadField({
   const [needsCompression, setNeedsCompression] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Sync preview when value prop changes externally (e.g. when edit modal opens)
+  useEffect(() => {
+    if (value && value !== preview) {
+      setPreview(value);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setError(null);
+    setUploadSuccess(false);
 
-    // Rule 1: Max 4MB rejection
     const MAX_4MB = 4 * 1024 * 1024;
     const THRESHOLD_2MB = 2 * 1024 * 1024;
 
@@ -44,17 +53,15 @@ export function ImageUploadField({
       return;
     }
 
-    // Set local preview immediately
+    // Show local blob preview immediately so user sees something right away
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
     setPendingFile(file);
 
-    // Rule 2: Files > 2MB must offer an image compression option before saving
     if (file.size > THRESHOLD_2MB) {
       setNeedsCompression(true);
     } else {
       setNeedsCompression(false);
-      // Auto-upload files under 2MB
       await uploadFile(file);
     }
   };
@@ -77,7 +84,6 @@ export function ImageUploadField({
       setNeedsCompression(false);
       setCompressing(false);
 
-      // Upload the compressed file
       await uploadFile(compressedFile);
     } catch (err) {
       console.error('Compression error:', err);
@@ -89,34 +95,46 @@ export function ImageUploadField({
   const uploadFile = async (fileToUpload: File) => {
     try {
       setUploading(true);
-      setProgress(30);
+      setUploadSuccess(false);
+      setProgress(20);
 
-      const formData = new FormData();
-      formData.append('file', fileToUpload);
-      formData.append('folder', folder);
+      const fd = new FormData();
+      fd.append('file', fileToUpload);
+      fd.append('folder', folder);
 
-      setProgress(60);
+      setProgress(50);
+
       const res = await fetch('/api/admin/upload', {
         method: 'POST',
-        body: formData,
+        body: fd,
       });
 
+      setProgress(90);
+
       const data = await res.json();
-      setProgress(100);
 
       if (!res.ok) {
         throw new Error(data.error || 'Upload failed');
       }
 
+      setProgress(100);
+
+      // Update preview to the real CDN URL
       setPreview(data.url);
       onChange(data.url, data.public_id);
       setNeedsCompression(false);
       setPendingFile(null);
+      setUploadSuccess(true);
+
+      // Hide success badge after 3s
+      setTimeout(() => setUploadSuccess(false), 3000);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Upload failed');
+      const msg = err instanceof Error ? err.message : 'Upload failed';
+      setError(msg);
+      console.error('Upload error:', err);
     } finally {
       setUploading(false);
-      setTimeout(() => setProgress(0), 500);
+      setTimeout(() => setProgress(0), 600);
     }
   };
 
@@ -124,6 +142,8 @@ export function ImageUploadField({
     setPreview(null);
     setPendingFile(null);
     setNeedsCompression(false);
+    setError(null);
+    setUploadSuccess(false);
     onChange('', '');
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
@@ -132,52 +152,97 @@ export function ImageUploadField({
     <div className={`space-y-2 ${className}`}>
       <label className="block text-sm font-semibold text-gray-800">{label}</label>
 
-      {/* Preview & Upload Box */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        {preview ? (
-          <div className="relative w-28 h-28 rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
-            <Image
-              src={preview}
-              alt="Preview"
-              fill
-              className="object-cover"
-              unoptimized
-            />
-            <button
-              type="button"
-              onClick={handleRemove}
-              className="absolute top-1 right-1 w-6 h-6 rounded-full bg-rose-600 text-white text-xs flex items-center justify-center hover:bg-rose-700 shadow-md"
-              title="Remove image"
-            >
-              ✕
-            </button>
-          </div>
-        ) : (
-          <div className="w-28 h-28 rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 bg-gray-50 text-xs">
-            <svg className="w-8 h-8 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span>No Image</span>
-          </div>
-        )}
+        {/* Image Preview — using plain <img> so blob: URLs and Cloudinary URLs both work */}
+        <div className="flex-shrink-0">
+          {preview ? (
+            <div className="relative w-28 h-28 rounded-2xl overflow-hidden border border-gray-200 bg-gray-100">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={preview}
+                alt="Preview"
+                className="w-full h-full object-cover"
+              />
+              {/* Upload success badge */}
+              {uploadSuccess && (
+                <div className="absolute inset-0 bg-emerald-500/20 flex items-center justify-center">
+                  <span className="text-emerald-700 text-lg">✓</span>
+                </div>
+              )}
+              {/* Uploading overlay */}
+              {uploading && (
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <div className="text-white text-xs font-bold">{progress}%</div>
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={handleRemove}
+                className="absolute top-1 right-1 w-6 h-6 rounded-full bg-rose-600 text-white text-xs flex items-center justify-center hover:bg-rose-700 shadow-md"
+                title="Remove image"
+              >
+                ✕
+              </button>
+            </div>
+          ) : (
+            <div className="w-28 h-28 rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 bg-gray-50 text-xs">
+              {uploading ? (
+                <div className="flex flex-col items-center gap-1">
+                  <div className="w-6 h-6 border-2 border-[#15803d] border-t-transparent rounded-full animate-spin" />
+                  <span className="text-[10px] text-gray-500">{progress}%</span>
+                </div>
+              ) : (
+                <>
+                  <svg className="w-8 h-8 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>No Image</span>
+                </>
+              )}
+            </div>
+          )}
+        </div>
 
         <div className="space-y-2 flex-1">
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp,image/svg+xml"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/svg+xml"
             onChange={handleFileChange}
-            className="text-xs text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-[#15803d] hover:file:bg-emerald-100 cursor-pointer"
+            className="text-xs text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-[#15803d] hover:file:bg-emerald-100 cursor-pointer w-full"
           />
-          <p className="text-xs text-gray-400">
-            Max upload size: 4 MB. Files between 2 MB - 4 MB can be compressed before upload.
-          </p>
 
-          {/* Prompt to compress if file is > 2MB */}
+          {/* Status text */}
+          {uploading && (
+            <p className="text-xs text-[#15803d] font-medium animate-pulse">
+              ⬆ Uploading image... {progress}%
+            </p>
+          )}
+          {uploadSuccess && !uploading && (
+            <p className="text-xs text-emerald-600 font-semibold">✓ Image uploaded successfully!</p>
+          )}
+          {!uploading && !uploadSuccess && (
+            <p className="text-xs text-gray-400">
+              Max 4 MB · JPG, PNG, WEBP, SVG accepted
+            </p>
+          )}
+
+          {/* Progress bar */}
+          {uploading && (
+            <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+              <div
+                className="bg-[#15803d] h-1.5 rounded-full transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          )}
+
+          {/* Compress prompt for large files */}
           {needsCompression && (
             <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-2">
               <p className="text-xs text-amber-800 font-medium">
-                This image is {(pendingFile ? (pendingFile.size / (1024 * 1024)).toFixed(1) : '2+')} MB. It is recommended to compress it for faster page load times.
+                This image is {(pendingFile ? (pendingFile.size / (1024 * 1024)).toFixed(1) : '2+')} MB.
+                Compress it for faster loading?
               </p>
               <div className="flex gap-2">
                 <button
@@ -200,17 +265,12 @@ export function ImageUploadField({
             </div>
           )}
 
-          {/* Progress bar */}
-          {uploading && (
-            <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
-              <div
-                className="bg-[#15803d] h-1.5 rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              />
+          {/* Error */}
+          {error && (
+            <div className="p-2 bg-rose-50 border border-rose-200 rounded-lg">
+              <p className="text-xs text-rose-600 font-medium">⚠ {error}</p>
             </div>
           )}
-
-          {error && <p className="text-xs text-rose-600 font-medium">{error}</p>}
         </div>
       </div>
     </div>
