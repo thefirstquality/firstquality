@@ -41,24 +41,26 @@ export function SourcingSection({ data, pillars }: SourcingSectionProps) {
             </div>
           </div>
 
-          {/* Right Column: 3 White Feature Cards */}
+          {/* Right Column: Feature Cards */}
           <div className="lg:col-span-7">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-              {pillars.map((pillar) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-5">
+              {pillars.map((pillar, index) => (
                 <div
                   key={pillar.id}
-                  className="bg-white text-gray-900 rounded-2xl p-6 shadow-xl flex flex-col justify-start"
+                  className={`bg-white text-gray-900 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-start ${
+                    index >= 2 ? 'hidden sm:flex' : 'flex'
+                  }`}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-5">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 sm:mb-5">
                     <IconRenderer
                       iconUrl={pillar.icon_url}
                       iconName={pillar.icon_name}
-                      className="w-6 h-6 text-[#15803d]"
+                      className="w-5 h-5 sm:w-6 sm:h-6 text-[#15803d]"
                       alt={pillar.title}
                     />
                   </div>
 
-                  <h3 className="text-base font-bold text-gray-900 mb-2 leading-snug">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1.5 sm:mb-2 leading-snug">
                     {pillar.title}
                   </h3>
 

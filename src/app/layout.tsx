@@ -50,9 +50,9 @@ export const metadata: Metadata = {
     images: ['/images/hero-farm-produce.jpg'],
   },
   icons: {
-    icon: '/images/logo.svg',
-    shortcut: '/images/logo.svg',
-    apple: '/images/logo.svg',
+    icon: '/images/logo.png',
+    shortcut: '/images/logo.png',
+    apple: '/images/logo.png',
   },
 };
 

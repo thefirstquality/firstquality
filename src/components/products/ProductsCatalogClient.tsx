@@ -47,10 +47,6 @@ export function ProductsCatalogClient({
     });
   }, [products, selectedCategory, stockFilter, searchQuery, categories]);
 
-  const getCategoryName = (catId: string) => {
-    const cat = categories.find((c) => c.id === catId || c.slug === catId);
-    return cat ? cat.name : 'Produce';
-  };
 
   return (
     <div className="space-y-8">
@@ -127,11 +123,11 @@ export function ProductsCatalogClient({
 
       {/* Products Grid */}
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
           {filteredProducts.map((item) => (
             <div
               key={item.id}
-              className="group flex flex-col rounded-3xl overflow-hidden border border-gray-100 bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1 justify-between"
+              className="group flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-100 bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1 justify-between"
             >
               <div>
                 {/* Image */}
@@ -140,20 +136,13 @@ export function ProductsCatalogClient({
                     src={item.image_url || '/images/cat-fresh-vegetables.jpg'}
                     alt={item.name}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     unoptimized={item.image_url?.startsWith('/images/')}
                   />
 
-                  {/* Category Pill */}
-                  <div className="absolute top-3 left-3">
-                    <span className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white/95 backdrop-blur-sm text-gray-800 shadow-sm">
-                      {getCategoryName(item.category_id)}
-                    </span>
-                  </div>
-
                   {/* Stock Status */}
-                  <div className="absolute top-3 right-3">
+                  <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3">
                     <span
                       className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-sm ${
                         item.in_stock
@@ -167,41 +156,43 @@ export function ProductsCatalogClient({
                 </div>
 
                 {/* Body */}
-                <div className="p-5 flex flex-col">
-                  <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d] transition-colors line-clamp-1 mb-1">
+                <div className="p-3 sm:p-5 flex flex-col">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#15803d] transition-colors line-clamp-1 mb-1">
                     {item.name}
                   </h3>
 
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2">
                     {item.unit && (
-                      <span className="px-2 py-0.5 rounded bg-gray-100 text-gray-700 font-semibold text-[11px]">
+                      <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded bg-gray-100 text-gray-700 font-semibold text-[10px] sm:text-[11px]">
                         {item.unit}
                       </span>
                     )}
                     {item.price_text && (
-                      <span className="px-2 py-0.5 rounded bg-emerald-50 text-[#15803d] font-bold text-[11px]">
+                      <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded bg-emerald-50 text-[#15803d] font-bold text-[10px] sm:text-[11px]">
                         {item.price_text}
                       </span>
                     )}
                   </div>
 
-                  <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+                  <p className="text-[11px] sm:text-xs text-gray-600 line-clamp-2 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
               </div>
 
               {/* WhatsApp CTA */}
-              <div className="p-5 pt-0">
+              <div className="p-3 pt-0 sm:p-5 sm:pt-0">
                 <a
                   href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
                     `Hello firstQuality, I would like to order: ${item.name} (${item.unit || 'Standard Pack'})`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold text-[#15803d] bg-emerald-50 hover:bg-[#15803d] hover:text-white transition-all duration-200 shadow-sm active:scale-95"
+                  className="w-full inline-flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 rounded-xl text-[11px] sm:text-xs font-bold text-[#15803d] bg-emerald-50 hover:bg-[#15803d] hover:text-white transition-all duration-200 shadow-sm active:scale-95"
                 >
-                  <span>💬 Order via WhatsApp</span>
+                  <span>💬</span>
+                  <span className="hidden sm:inline">Order via WhatsApp</span>
+                  <span className="sm:hidden">WhatsApp</span>
                 </a>
               </div>
             </div>

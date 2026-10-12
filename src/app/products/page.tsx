@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import {
@@ -55,29 +54,7 @@ export default async function ProductsPage() {
               whatsappNumber={settings.whatsapp_number}
             />
 
-            {/* Quick Bulk Order Box */}
-            <div className="mt-16 p-8 sm:p-12 rounded-3xl bg-[#0b2f1f] text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
-              <div>
-                <span className="text-xs font-bold text-green-400 uppercase tracking-widest">
-                  COMMERCIAL & WHOLESALE SOURCING
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white mt-1 mb-2">
-                  Need Bulk Supplies for Hotels or Supermarkets?
-                </h3>
-                <p className="text-sm sm:text-base text-emerald-100/90 max-w-xl">
-                  We supply sorted, weighed, and crated vegetables in bulk every morning. Get customized price contracts and credit terms.
-                </p>
-              </div>
 
-              <div className="flex-shrink-0">
-                <Link
-                  href="/enquiry"
-                  className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl text-sm font-bold text-[#0b2f1f] bg-white hover:bg-emerald-50 transition-all shadow-md active:scale-95"
-                >
-                  Request Wholesale Rate Card
-                </Link>
-              </div>
-            </div>
           </div>
         </section>
       </main>

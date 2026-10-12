@@ -7,7 +7,7 @@ insert into site_settings (
 ) values (
   'firstQuality',
   'Fresh Vegetables, Better Living.',
-  '/images/logo.svg',
+  '/images/logo.png',
   '+91 98765 43100',
   '919876543100',
   'info@firstquality.in',
@@ -18,7 +18,7 @@ insert into site_settings (
   'https://youtube.com/firstquality',
   'https://wa.me/919876543100',
   'Fresh vegetables, quality first. We work directly with local farmers to bring fresh and nutritious produce to homes, retailers and businesses across Kerala.',
-  '© 2024 firstQuality. All rights reserved.'
+  '© 2026 firstQuality. All rights reserved.'
 ) on conflict do nothing;
 
 -- Hero Section
