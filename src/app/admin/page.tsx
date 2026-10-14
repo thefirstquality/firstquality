@@ -231,19 +231,6 @@ export default async function AdminDashboardPage() {
             </Link>
 
             <Link
-              href="/admin/sourcing"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
-            >
-              <div className="text-2xl mb-2">🌱</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Sourcing Philosophy
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Manage farmer partnership principles and field supervision guidelines.
-              </p>
-            </Link>
-
-            <Link
               href="/admin/farms"
               className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
             >

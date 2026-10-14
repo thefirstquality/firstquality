@@ -12,6 +12,7 @@ import {
   getProductsByCategory,
   DEFAULT_CATEGORIES,
 } from '@/services/contentService';
+import { ProductCardItem } from '@/components/products/ProductCardItem';
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
@@ -149,70 +150,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               {products.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {products.map((item) => (
-                    <div
+                    <ProductCardItem
                       key={item.id}
-                      className="group bg-[#fbfdfb] hover:bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between"
-                    >
-                      <div>
-                        <div className="relative aspect-[4/3] w-full bg-gray-100 overflow-hidden">
-                          <Image
-                            src={item.image_url || category.image_url}
-                            alt={item.name}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
-                            unoptimized={item.image_url?.startsWith('/images/')}
-                          />
-                          <div className="absolute top-2 right-2">
-                            <span
-                              className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-sm ${
-                                item.in_stock
-                                  ? 'bg-emerald-500 text-white'
-                                  : 'bg-rose-500 text-white'
-                              }`}
-                            >
-                              {item.in_stock ? 'In Stock' : 'Out of Stock'}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="p-5 space-y-2">
-                          <h4 className="text-base font-bold text-gray-900 group-hover:text-[#15803d] transition-colors line-clamp-1">
-                            {item.name}
-                          </h4>
-
-                          <div className="flex items-center gap-2 text-xs">
-                            {item.unit && (
-                              <span className="px-2 py-0.5 rounded bg-gray-100 text-gray-700 font-semibold text-[11px]">
-                                {item.unit}
-                              </span>
-                            )}
-                            {item.price_text && (
-                              <span className="px-2 py-0.5 rounded bg-emerald-50 text-[#15803d] font-bold text-[11px]">
-                                {item.price_text}
-                              </span>
-                            )}
-                          </div>
-
-                          <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
-                            {item.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="p-5 pt-0">
-                        <a
-                          href={`https://wa.me/${settings.whatsapp_number}?text=${encodeURIComponent(
-                            `Hello, I would like to order: ${item.name} (${item.unit || 'Standard Pack'}) from firstQuality.`
-                          )}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-[#15803d] bg-emerald-50 hover:bg-[#15803d] hover:text-white transition-all shadow-sm"
-                        >
-                          <span>💬 Order via WhatsApp</span>
-                        </a>
-                      </div>
-                    </div>
+                      item={item}
+                      categoryImageUrl={category.image_url}
+                      whatsappNumber={settings.whatsapp_number}
+                    />
                   ))}
                 </div>
               ) : (

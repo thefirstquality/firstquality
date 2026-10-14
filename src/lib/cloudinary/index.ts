@@ -10,7 +10,9 @@ if (process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_
   });
 }
 
-export const MAX_FILE_SIZE_BYTES = 4 * 1024 * 1024; // 4 MB
+export const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
+export const MAX_VIDEO_SIZE_BYTES = 60 * 1024 * 1024; // 60 MB
+export const MAX_FILE_SIZE_BYTES = MAX_VIDEO_SIZE_BYTES;
 export const COMPRESSION_THRESHOLD_BYTES = 2 * 1024 * 1024; // 2 MB
 
 export interface UploadResult {
@@ -23,19 +25,21 @@ export interface UploadResult {
 }
 
 /**
- * Upload image buffer to Cloudinary
+ * Upload image or video buffer to Cloudinary
  */
 export async function uploadToCloudinary(
   buffer: Buffer,
   folder = 'firstquality',
-  customPublicId?: string
+  customPublicId?: string,
+  resourceType: 'image' | 'video' | 'auto' = 'auto'
 ): Promise<UploadResult> {
   if (!process.env.CLOUDINARY_API_SECRET) {
     throw new Error('Cloudinary credentials are not configured on the server.');
   }
 
-  if (buffer.length > MAX_FILE_SIZE_BYTES) {
-    throw new Error('File exceeds the maximum allowed size of 4 MB.');
+  const maxSize = resourceType === 'image' ? MAX_IMAGE_SIZE_BYTES : MAX_VIDEO_SIZE_BYTES;
+  if (buffer.length > maxSize) {
+    throw new Error(`File exceeds the maximum allowed size of ${Math.round(maxSize / (1024 * 1024))} MB.`);
   }
 
   return new Promise((resolve, reject) => {
@@ -43,11 +47,20 @@ export async function uploadToCloudinary(
       {
         folder,
         public_id: customPublicId,
-        resource_type: 'image',
-        transformation: [
-          { quality: 'auto:good' },
-          { fetch_format: 'auto' }
-        ],
+        resource_type: resourceType,
+        ...(resourceType === 'image'
+          ? {
+              transformation: [
+                { quality: 'auto:good' },
+                { fetch_format: 'auto' },
+              ],
+            }
+          : {
+              transformation: [
+                { quality: 'auto:eco' },
+                { width: 1280, crop: 'limit' },
+              ],
+            }),
       },
       (error, result) => {
         if (error || !result) {

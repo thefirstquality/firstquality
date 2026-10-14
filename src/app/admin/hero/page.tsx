@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ImageUploadField } from '@/components/admin/ImageUploadField';
 import type { HeroSectionData, HeroBenefit } from '@/types';
@@ -77,7 +78,7 @@ export default function AdminHeroPage() {
             primary_cta_text: hero.primary_cta_text,
             primary_cta_url: hero.primary_cta_url || '/products',
             secondary_cta_text: hero.secondary_cta_text,
-            secondary_cta_url: hero.secondary_cta_url || '/enquiry',
+            secondary_cta_url: hero.secondary_cta_url || '#farms',
             background_image_url: hero.background_image_url,
             background_public_id: hero.background_public_id || null,
             is_published: hero.is_published ?? true,
@@ -328,30 +329,47 @@ export default function AdminHeroPage() {
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-3 p-3.5 bg-emerald-50/50 rounded-xl border border-emerald-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <label className="block text-xs font-bold text-gray-800 uppercase tracking-wider">
+                    Secondary CTA Button (Popup Video Trigger)
+                  </label>
+                  <p className="text-[11px] text-gray-500">
+                    Controls the hero button that opens the popup video modal.
+                  </p>
+                </div>
+                <span className="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                  🎬 Popup Video
+                </span>
+              </div>
+
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                  Secondary Button Label
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Button Label
                 </label>
                 <input
                   type="text"
                   value={hero.secondary_cta_text || ''}
                   onChange={(e) => setHero({ ...hero, secondary_cta_text: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#15803d]"
-                  placeholder="e.g. Business Enquiry"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#15803d] bg-white"
+                  placeholder="e.g. Farm Videos"
                 />
               </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
-                  Secondary Button URL
-                </label>
-                <input
-                  type="text"
-                  value={hero.secondary_cta_url || ''}
-                  onChange={(e) => setHero({ ...hero, secondary_cta_url: e.target.value })}
-                  className="w-full px-4 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#15803d]"
-                  placeholder="e.g. /enquiry"
-                />
+
+              <div className="pt-1">
+                <Link
+                  href="/admin/hero-video"
+                  className="inline-flex items-center justify-between w-full p-3 rounded-xl bg-white border border-emerald-300 hover:border-emerald-500 hover:shadow-xs text-xs font-bold text-emerald-900 transition group"
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="text-base">🎬</span>
+                    <span>Configure Hero Popup Video & Media</span>
+                  </span>
+                  <span className="text-emerald-700 group-hover:translate-x-1 transition-transform">
+                    Edit Video &rarr;
+                  </span>
+                </Link>
               </div>
             </div>
           </div>

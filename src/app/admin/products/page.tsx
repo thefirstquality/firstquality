@@ -42,7 +42,7 @@ function AdminProductsContent() {
     slug: '',
     description: '',
     image_url: '',
-    unit: '1 kg',
+    unit: '',
     price_text: '',
     in_stock: true,
     sort_order: 0,
@@ -132,7 +132,7 @@ function AdminProductsContent() {
       slug: '',
       description: '',
       image_url: '',
-      unit: '1 kg',
+      unit: '',
       price_text: '',
       in_stock: true,
       sort_order: products.length + 1,
@@ -177,7 +177,7 @@ function AdminProductsContent() {
       slug: latestForm.slug?.trim() || `${slugBase}-${Date.now().toString().slice(-5)}`,
       description: latestForm.description?.trim() || `Fresh ${productName} from Kerala farms.`,
       image_url: latestForm.image_url?.trim() || '/images/cat-fresh-vegetables.jpg',
-      unit: latestForm.unit?.trim() || '1 kg',
+      unit: latestForm.unit?.trim() || '',
       in_stock: latestForm.in_stock ?? true,
       is_published: latestForm.is_published ?? true,
       sort_order: latestForm.sort_order ?? products.length + 1,
@@ -640,27 +640,40 @@ function AdminProductsContent() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                      Pack / Unit Size (e.g. 1 kg, 500 g, 1 Kit)
+                      Pack / Unit Size (Optional)
                     </label>
                     <input
                       type="text"
                       value={formData.unit || ''}
                       onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#15803d]"
-                      placeholder="1 kg"
+                      placeholder="e.g. 1 kg, 500 g (Leave empty if none)"
                     />
-                    <div className="flex gap-1.5 mt-1.5 flex-wrap">
+                    <div className="flex gap-1.5 mt-1.5 flex-wrap items-center">
                       {['1 kg', '500 g', '250 g', '1 Pack', '1 Kit', '1 Box', '1 Litre'].map(
                         (preset) => (
                           <button
                             key={preset}
                             type="button"
                             onClick={() => setFormData({ ...formData, unit: preset })}
-                            className="px-2 py-0.5 text-[10px] rounded bg-gray-100 hover:bg-gray-200 text-gray-600"
+                            className={`px-2 py-0.5 text-[10px] rounded transition-colors ${
+                              formData.unit === preset
+                                ? 'bg-[#15803d] text-white font-bold'
+                                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                            }`}
                           >
                             {preset}
                           </button>
                         )
+                      )}
+                      {formData.unit && (
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, unit: '' })}
+                          className="px-2 py-0.5 text-[10px] rounded bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold"
+                        >
+                          ✕ Clear
+                        </button>
                       )}
                     </div>
                   </div>

@@ -134,7 +134,7 @@ export function ContactForm({
         {/* Email */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Email Address <span className="text-red-500">*</span>
+            Email Address <span className="text-gray-400 font-normal">(Optional)</span>
           </label>
           <input
             type="email"
@@ -153,7 +153,7 @@ export function ContactForm({
       {/* Enquiry Type */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Enquiry Type <span className="text-red-500">*</span>
+          Enquiry Type <span className="text-gray-400 font-normal">(Optional)</span>
         </label>
         <select
           {...register('enquiryType')}
@@ -170,7 +170,7 @@ export function ContactForm({
       {/* Message */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Your Requirement or Message <span className="text-red-500">*</span>
+          Your Requirement or Message <span className="text-gray-400 font-normal">(Optional)</span>
         </label>
         <textarea
           rows={4}
