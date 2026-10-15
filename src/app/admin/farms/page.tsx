@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { Plus, Star, Clapperboard, Video } from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ImageUploadField } from '@/components/admin/ImageUploadField';
+import { VideoUploadField, isDirectVideoFile, extractYoutubeId } from '@/components/admin/VideoUploadField';
 import { DeleteModal } from '@/components/admin/DeleteModal';
 import type { FarmVideoItem } from '@/types';
 import { DEFAULT_FARM_VIDEOS } from '@/services/defaults';
@@ -49,7 +51,7 @@ export default function AdminFarmsPage() {
     setFormData({
       title: '',
       duration: '0:45',
-      video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      video_url: '',
       thumbnail_url: '',
       is_featured: false,
       sort_order: videos.length + 1,
@@ -66,10 +68,26 @@ export default function AdminFarmsPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title || !formData.thumbnail_url) {
-      alert('Please fill in required fields (Title, Thumbnail)');
+    if (!formData.title || !formData.video_url) {
+      alert('Please fill in required fields (Title and Video Source)');
       return;
     }
+
+    // Auto-generate thumbnail if missing and YouTube URL is provided
+    let finalThumbnail = formData.thumbnail_url;
+    if (!finalThumbnail) {
+      const ytId = extractYoutubeId(formData.video_url || '');
+      if (ytId) {
+        finalThumbnail = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+      } else {
+        finalThumbnail = '/images/farm-harvesting.jpg';
+      }
+    }
+
+    const payload = {
+      ...formData,
+      thumbnail_url: finalThumbnail,
+    };
 
     try {
       if (activeVideo) {
@@ -79,11 +97,11 @@ export default function AdminFarmsPage() {
           body: JSON.stringify({
             table: 'farm_videos',
             id: activeVideo.id,
-            data: formData,
+            data: payload,
           }),
         });
         setVideos((prev) =>
-          prev.map((v) => (v.id === activeVideo.id ? ({ ...v, ...formData } as FarmVideoItem) : v))
+          prev.map((v) => (v.id === activeVideo.id ? ({ ...v, ...payload } as FarmVideoItem) : v))
         );
       } else {
         const res = await fetch('/api/admin/content', {
@@ -91,11 +109,11 @@ export default function AdminFarmsPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             table: 'farm_videos',
-            data: formData,
+            data: payload,
           }),
         });
         const json = await res.json();
-        const newV = (json.data || { ...formData, id: `v-${Date.now()}` }) as FarmVideoItem;
+        const newV = (json.data || { ...payload, id: `v-${Date.now()}` }) as FarmVideoItem;
         setVideos((prev) => [...prev, newV]);
       }
 
@@ -141,7 +159,7 @@ export default function AdminFarmsPage() {
           <div>
             <h1 className="text-2xl font-extrabold text-gray-900">Farm Videos & Footage</h1>
             <p className="text-xs text-gray-500 mt-1">
-              Manage video cards shown in Reference 2 (&quot;Real Farms. Real People. Real Work.&quot;)
+              Manage video cards shown in &quot;Real Farms. Real People. Real Work.&quot; section (arranged 5 on desktop, interactive carousel on mobile).
             </p>
           </div>
 
@@ -150,65 +168,93 @@ export default function AdminFarmsPage() {
             onClick={handleOpenAdd}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534] shadow-sm transition-all"
           >
-            <span>+ Add Video</span>
+            <Plus className="w-4 h-4" />
+            <span>Add Video</span>
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
           {videos.map((v) => (
             <div
               key={v.id}
-              className="bg-white rounded-2xl border border-gray-200/80 overflow-hidden shadow-sm flex flex-col justify-between"
+              className="bg-white rounded-2xl border border-gray-200/80 overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow"
             >
               <div>
-                <div className="relative aspect-video w-full bg-gray-900">
+                <div className="relative aspect-[9/14] w-full bg-gray-900 overflow-hidden">
                   <Image
-                    src={v.thumbnail_url}
+                    src={v.thumbnail_url || '/images/farm-harvesting.jpg'}
                     alt={v.title}
                     fill
                     className="object-cover"
-                    unoptimized={v.thumbnail_url.startsWith('/images/')}
+                    unoptimized={v.thumbnail_url?.startsWith('/images/') || v.thumbnail_url?.includes('img.youtube.com')}
                   />
-                  <div className="absolute top-2 left-2">
+                  {/* Top badges */}
+                  <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
                     {v.is_featured && (
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-white">
-                        ★ Featured
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500 text-white shadow-sm">
+                        <Star className="w-2.5 h-2.5 fill-current" />
+                        <span>Featured</span>
                       </span>
                     )}
+                    <span
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold shadow-sm ${
+                        isDirectVideoFile(v.video_url)
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-red-600 text-white'
+                      }`}
+                    >
+                      {isDirectVideoFile(v.video_url) ? (
+                        <>
+                          <Clapperboard className="w-2.5 h-2.5" />
+                          <span>Uploaded File</span>
+                        </>
+                      ) : (
+                        <>
+                          <Video className="w-2.5 h-2.5" />
+                          <span>YouTube</span>
+                        </>
+                      )}
+                    </span>
                   </div>
-                  <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/70 text-white text-[11px] font-mono">
+
+                  <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/75 text-white text-[10px] font-mono">
                     {v.duration}
                   </div>
                 </div>
 
-                <div className="p-4">
-                  <h3 className="text-base font-bold text-gray-900 mb-1">{v.title}</h3>
+                <div className="p-3.5">
+                  <h3 className="text-sm font-bold text-gray-900 mb-1 line-clamp-1">{v.title}</h3>
                   <a
                     href={v.video_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-emerald-700 hover:underline line-clamp-1"
+                    className="text-[11px] text-emerald-700 hover:underline line-clamp-1 font-mono"
                   >
                     {v.video_url}
                   </a>
                 </div>
               </div>
 
-              <div className="p-4 pt-0 border-t border-gray-100 flex items-center justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleOpenEdit(v)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleOpenDelete(v)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-600 hover:bg-rose-50"
-                >
-                  Delete
-                </button>
+              <div className="p-3 pt-0 border-t border-gray-100 flex items-center justify-between text-xs">
+                <span className="text-[10px] font-semibold text-gray-400">
+                  Order #{v.sort_order}
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleOpenEdit(v)}
+                    className="px-2.5 py-1 rounded-lg text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenDelete(v)}
+                    className="px-2.5 py-1 rounded-lg text-xs font-semibold text-rose-600 hover:bg-rose-50"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -228,7 +274,7 @@ export default function AdminFarmsPage() {
                 {activeVideo ? 'Edit Farm Video' : 'Add Farm Video'}
               </h2>
 
-              <form onSubmit={handleSave} className="space-y-4">
+              <form onSubmit={handleSave} className="space-y-5">
                 <div>
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
                     Title <span className="text-red-500">*</span>
@@ -258,19 +304,37 @@ export default function AdminFarmsPage() {
 
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                      Video / YouTube URL
+                      Sort Order (1, 2, 3...)
                     </label>
                     <input
-                      type="url"
-                      value={formData.video_url || ''}
-                      onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
+                      type="number"
+                      value={formData.sort_order ?? 0}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          sort_order: parseInt(e.target.value) || 0,
+                        })
+                      }
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#15803d]"
                     />
                   </div>
                 </div>
 
+                {/* Video Source: YouTube, Instagram, or Facebook */}
+                <VideoUploadField
+                  label="Video Link (YouTube, Instagram Reel, or Facebook)"
+                  value={formData.video_url || ''}
+                  onChange={(videoUrl) => setFormData({ ...formData, video_url: videoUrl })}
+                  onThumbnailSuggest={(thumb) => {
+                    if (!formData.thumbnail_url) {
+                      setFormData({ ...formData, thumbnail_url: thumb });
+                    }
+                  }}
+                />
+
+                {/* Custom Thumbnail Image */}
                 <ImageUploadField
-                  label="Video Thumbnail Image"
+                  label="Video Thumbnail Image (Optional / Poster)"
                   value={formData.thumbnail_url}
                   onChange={(url, publicId) => {
                     setFormData({

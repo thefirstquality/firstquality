@@ -24,9 +24,9 @@ export async function POST(request: Request) {
         full_name: fullName,
         business_name: businessName || null,
         phone,
-        email,
-        enquiry_type: enquiryType,
-        message,
+        email: email || null,
+        enquiry_type: enquiryType || 'wholesale',
+        message: message || null,
         status: 'new',
       });
 

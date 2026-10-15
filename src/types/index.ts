@@ -42,6 +42,18 @@ export interface HeroSectionData {
   is_published: boolean;
 }
 
+export interface HeroPopupVideoItem {
+  id?: string;
+  title: string;
+  duration?: string;
+  video_url: string;
+  thumbnail_url?: string;
+  thumbnail_public_id?: string;
+  description?: string;
+  is_featured?: boolean;
+  is_published?: boolean;
+}
+
 export interface HeroBenefit {
   id: string;
   title: string;

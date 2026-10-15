@@ -1,5 +1,21 @@
 import React from 'react';
 import Link from 'next/link';
+import {
+  FolderTree,
+  Package,
+  PanelsTopLeft,
+  Clapperboard,
+  Users,
+  ChartNoAxesCombined,
+  Sparkles,
+  Sprout,
+  MessageSquareQuote,
+  Images,
+  Settings2,
+  Mail,
+  ExternalLink,
+  ArrowRight,
+} from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import {
   getProductCategories,
@@ -71,9 +87,10 @@ export default async function AdminDashboardPage() {
             <Link
               href="/"
               target="_blank"
-              className="px-5 py-2.5 rounded-xl bg-white text-[#0b2f1f] text-xs font-bold hover:bg-emerald-50 transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-white text-[#0b2f1f] text-xs font-bold hover:bg-emerald-50 transition-colors shadow-sm"
             >
-              Preview Live Site ↗
+              <span>Preview Live Site</span>
+              <ExternalLink className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
@@ -118,7 +135,9 @@ export default async function AdminDashboardPage() {
                 {categories.length}
               </div>
             </div>
-            <span className="text-xl">📁</span>
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+              <FolderTree className="w-5 h-5" />
+            </div>
           </Link>
 
           <Link
@@ -131,7 +150,9 @@ export default async function AdminDashboardPage() {
                 {products.length}
               </div>
             </div>
-            <span className="text-xl">🥦</span>
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+              <Package className="w-5 h-5" />
+            </div>
           </Link>
 
           <Link
@@ -144,7 +165,9 @@ export default async function AdminDashboardPage() {
                 {enquiriesCount}
               </div>
             </div>
-            <span className="text-xl">📬</span>
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+              <Mail className="w-5 h-5" />
+            </div>
           </Link>
         </div>
 
@@ -154,145 +177,189 @@ export default async function AdminDashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <Link
               href="/admin/categories"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group flex flex-col justify-between"
             >
-              <div className="text-2xl mb-2">📁</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Product Categories ({categories.length})
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Manage high-level produce categories (Fresh Vegetables, Fresh-Cut, Combo Kits, Kitchen Essentials).
-              </p>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+                  <FolderTree className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                  Product Categories ({categories.length})
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Manage high-level produce categories (Fresh Vegetables, Fresh-Cut, Combo Kits, Kitchen Essentials).
+                </p>
+              </div>
             </Link>
 
             <Link
               href="/admin/products"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group flex flex-col justify-between"
             >
-              <div className="text-2xl mb-2">🥦</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Produce & Products Catalog ({products.length})
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Create & update vegetable items, pricing, units, descriptions, and stock availability.
-              </p>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+                  <Package className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                  Produce & Products Catalog ({products.length})
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Create & update vegetable items, pricing, units, descriptions, and stock availability.
+                </p>
+              </div>
             </Link>
 
             <Link
               href="/admin/hero"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group flex flex-col justify-between"
             >
-              <div className="text-2xl mb-2">🌄</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Hero & Benefit Highlights
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Update headlines, background crate photo, and 4 benefit icons.
-              </p>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+                  <PanelsTopLeft className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                  Hero & Benefit Highlights
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Update headlines, background crate photo, and 4 benefit icons.
+                </p>
+              </div>
+            </Link>
+
+            <Link
+              href="/admin/hero-video"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+                  <Clapperboard className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                  Hero Popup Video
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Configure the dedicated hero button video modal, title, preview, and YouTube or uploaded file source.
+                </p>
+              </div>
             </Link>
 
             <Link
               href="/admin/about"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group flex flex-col justify-between"
             >
-              <div className="text-2xl mb-2">👨‍🌾</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                About Section & Features
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Update farmer photo, company story, and 4 core principle cards.
-              </p>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+                  <Users className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                  About Section & Features
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Update farmer photo, company story, and 4 core principle cards.
+                </p>
+              </div>
             </Link>
 
             <Link
               href="/admin/statistics"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group flex flex-col justify-between"
             >
-              <div className="text-2xl mb-2">📈</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Key Statistics
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Update customer counts, farmer network numbers, and service regions.
-              </p>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+                  <ChartNoAxesCombined className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                  Key Statistics
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Update customer counts, farmer network numbers, and service regions.
+                </p>
+              </div>
             </Link>
 
             <Link
               href="/admin/why-choose"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group flex flex-col justify-between"
             >
-              <div className="text-2xl mb-2">✨</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Why Choose Us Pillars
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Manage 4 value proposition cards displayed across landing pages.
-              </p>
-            </Link>
-
-            <Link
-              href="/admin/sourcing"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
-            >
-              <div className="text-2xl mb-2">🌱</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Sourcing Philosophy
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Manage farmer partnership principles and field supervision guidelines.
-              </p>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                  Why Choose Us Pillars
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Manage 4 value proposition cards displayed across landing pages.
+                </p>
+              </div>
             </Link>
 
             <Link
               href="/admin/farms"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group flex flex-col justify-between"
             >
-              <div className="text-2xl mb-2">🎬</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Farm Videos ({videos.length})
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Manage harvest video thumbnails, play URLs, and duration tags.
-              </p>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+                  <Sprout className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                  Farm Videos ({videos.length})
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Manage harvest video thumbnails, play URLs, and duration tags.
+                </p>
+              </div>
             </Link>
 
             <Link
               href="/admin/testimonials"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group flex flex-col justify-between"
             >
-              <div className="text-2xl mb-2">💬</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Customer Testimonials ({testimonials.length})
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Manage quotes, restaurant owner avatars, and customer roles.
-              </p>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+                  <MessageSquareQuote className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                  Customer Testimonials ({testimonials.length})
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Manage quotes, restaurant owner avatars, and customer roles.
+                </p>
+              </div>
             </Link>
 
             <Link
               href="/admin/media"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group flex flex-col justify-between"
             >
-              <div className="text-2xl mb-2">🖼️</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Media & Cloudinary Asset Manager
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Upload image assets with 4MB validation and 2MB compression assistant.
-              </p>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+                  <Images className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                  Media & Cloudinary Asset Manager
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Upload image assets with 4MB validation and 2MB compression assistant.
+                </p>
+              </div>
             </Link>
 
             <Link
               href="/admin/settings"
-              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group"
+              className="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all group flex flex-col justify-between"
             >
-              <div className="text-2xl mb-2">⚙️</div>
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
-                Site Settings & DB Connection
-              </h3>
-              <p className="text-xs text-gray-500 mt-1">
-                Configure brand name, phone, WhatsApp number, and addresses.
-              </p>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#15803d] flex items-center justify-center mb-3 group-hover:bg-[#15803d] group-hover:text-white transition-colors">
+                  <Settings2 className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 group-hover:text-[#15803d]">
+                  Site Settings & DB Connection
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Configure brand name, phone, WhatsApp number, and addresses.
+                </p>
+              </div>
             </Link>
           </div>
         </div>
@@ -308,9 +375,10 @@ export default async function AdminDashboardPage() {
             </div>
             <Link
               href="/admin/enquiries"
-              className="text-xs font-bold text-[#15803d] hover:underline"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#15803d] hover:underline"
             >
-              View All Enquiries →
+              <span>View All Enquiries</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
