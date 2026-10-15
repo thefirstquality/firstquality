@@ -4,6 +4,15 @@ import React, { useState, useEffect, useMemo, Suspense, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import {
+  Package,
+  FolderTree,
+  Plus,
+  Search,
+  X,
+  AlertTriangle,
+  Check,
+} from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ImageUploadField } from '@/components/admin/ImageUploadField';
 import { DeleteModal } from '@/components/admin/DeleteModal';
@@ -42,7 +51,7 @@ function AdminProductsContent() {
     slug: '',
     description: '',
     image_url: '',
-    unit: '1 kg',
+    unit: '',
     price_text: '',
     in_stock: true,
     sort_order: 0,
@@ -132,7 +141,7 @@ function AdminProductsContent() {
       slug: '',
       description: '',
       image_url: '',
-      unit: '1 kg',
+      unit: '',
       price_text: '',
       in_stock: true,
       sort_order: products.length + 1,
@@ -177,7 +186,7 @@ function AdminProductsContent() {
       slug: latestForm.slug?.trim() || `${slugBase}-${Date.now().toString().slice(-5)}`,
       description: latestForm.description?.trim() || `Fresh ${productName} from Kerala farms.`,
       image_url: latestForm.image_url?.trim() || '/images/cat-fresh-vegetables.jpg',
-      unit: latestForm.unit?.trim() || '1 kg',
+      unit: latestForm.unit?.trim() || '',
       in_stock: latestForm.in_stock ?? true,
       is_published: latestForm.is_published ?? true,
       sort_order: latestForm.sort_order ?? products.length + 1,
@@ -290,8 +299,8 @@ function AdminProductsContent() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xl">🥦</span>
+            <div className="flex items-center gap-2.5 mb-1">
+              <Package className="w-6 h-6 text-[#15803d]" />
               <h1 className="text-2xl font-extrabold text-gray-900">Products Catalog</h1>
             </div>
             <p className="text-xs text-gray-500">
@@ -304,14 +313,16 @@ function AdminProductsContent() {
               href="/admin/categories"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 shadow-sm transition-all"
             >
-              <span>📁 Manage Categories</span>
+              <FolderTree className="w-4 h-4 text-emerald-700" />
+              <span>Manage Categories</span>
             </Link>
             <button
               type="button"
               onClick={handleOpenAdd}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534] shadow-sm transition-all"
             >
-              <span>+ Add Product</span>
+              <Plus className="w-4 h-4" />
+              <span>Add Product</span>
             </button>
           </div>
         </div>
@@ -345,20 +356,21 @@ function AdminProductsContent() {
           <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
             {/* Search Input */}
             <div className="relative flex-1">
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search products by name, description, or unit..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#15803d]"
+                className="w-full pl-9 pr-8 py-2 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#15803d]"
               />
-              <span className="absolute left-3 top-2.5 text-gray-400 text-sm">🔍</span>
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-2.5 text-xs text-gray-400 hover:text-gray-600"
+                  className="absolute right-2.5 top-2.5 p-0.5 text-gray-400 hover:text-gray-600 rounded"
+                  aria-label="Clear search"
                 >
-                  ✕
+                  <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
@@ -488,14 +500,24 @@ function AdminProductsContent() {
                   <button
                     type="button"
                     onClick={() => toggleStockStatus(product)}
-                    className={`text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-colors ${
+                    className={`text-xs font-semibold px-2.5 py-1.5 rounded-lg border transition-colors inline-flex items-center gap-1 ${
                       product.in_stock
                         ? 'border-emerald-200 text-emerald-700 hover:bg-emerald-50'
                         : 'border-rose-200 text-rose-700 hover:bg-rose-50'
                     }`}
                     title="Click to toggle In Stock / Out of Stock"
                   >
-                    {product.in_stock ? '✓ Available' : '✕ Out of Stock'}
+                    {product.in_stock ? (
+                      <>
+                        <Check className="w-3 h-3 text-emerald-600" />
+                        <span>Available</span>
+                      </>
+                    ) : (
+                      <>
+                        <X className="w-3 h-3 text-rose-600" />
+                        <span>Out of Stock</span>
+                      </>
+                    )}
                   </button>
 
                   <div className="flex items-center gap-2">
@@ -520,7 +542,9 @@ function AdminProductsContent() {
           </div>
         ) : (
           <div className="bg-white rounded-3xl border border-gray-100 p-12 text-center shadow-sm">
-            <div className="text-4xl mb-3">🥦</div>
+            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#15803d] flex items-center justify-center mx-auto mb-3">
+              <Package className="w-6 h-6" />
+            </div>
             <h3 className="text-lg font-bold text-gray-900">No products found</h3>
             <p className="text-sm text-gray-500 mt-1 max-w-sm mx-auto">
               {searchQuery
@@ -532,7 +556,8 @@ function AdminProductsContent() {
               onClick={handleOpenAdd}
               className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534] shadow-sm transition-all"
             >
-              <span>+ Add First Product</span>
+              <Plus className="w-4 h-4" />
+              <span>Add First Product</span>
             </button>
           </div>
         )}
@@ -554,8 +579,9 @@ function AdminProductsContent() {
                 <button
                   onClick={() => setEditModalOpen(false)}
                   className="p-1 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+                  aria-label="Close modal"
                 >
-                  ✕
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
@@ -567,7 +593,10 @@ function AdminProductsContent() {
                   </label>
                   {categories.length === 0 ? (
                     <div className="p-3.5 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-800 flex items-center justify-between">
-                      <span>⚠️ You haven't added any categories yet.</span>
+                      <span className="flex items-center gap-1.5">
+                        <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                        You haven&apos;t added any categories yet.
+                      </span>
                       <Link
                         href="/admin/categories"
                         className="font-bold underline text-amber-900 hover:text-amber-700"
@@ -640,27 +669,41 @@ function AdminProductsContent() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                      Pack / Unit Size (e.g. 1 kg, 500 g, 1 Kit)
+                      Pack / Unit Size (Optional)
                     </label>
                     <input
                       type="text"
                       value={formData.unit || ''}
                       onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#15803d]"
-                      placeholder="1 kg"
+                      placeholder="e.g. 1 kg, 500 g (Leave empty if none)"
                     />
-                    <div className="flex gap-1.5 mt-1.5 flex-wrap">
+                    <div className="flex gap-1.5 mt-1.5 flex-wrap items-center">
                       {['1 kg', '500 g', '250 g', '1 Pack', '1 Kit', '1 Box', '1 Litre'].map(
                         (preset) => (
                           <button
                             key={preset}
                             type="button"
                             onClick={() => setFormData({ ...formData, unit: preset })}
-                            className="px-2 py-0.5 text-[10px] rounded bg-gray-100 hover:bg-gray-200 text-gray-600"
+                            className={`px-2 py-0.5 text-[10px] rounded transition-colors ${
+                              formData.unit === preset
+                                ? 'bg-[#15803d] text-white font-bold'
+                                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                            }`}
                           >
                             {preset}
                           </button>
                         )
+                      )}
+                      {formData.unit && (
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, unit: '' })}
+                          className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] rounded bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold"
+                        >
+                          <X className="w-3 h-3" />
+                          <span>Clear</span>
+                        </button>
                       )}
                     </div>
                   </div>
@@ -752,8 +795,9 @@ function AdminProductsContent() {
 
                 {/* Save Error */}
                 {saveError && (
-                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 font-medium">
-                    ⚠️ {saveError}
+                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 font-medium flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-rose-600 flex-shrink-0" />
+                    <span>{saveError}</span>
                   </div>
                 )}
 

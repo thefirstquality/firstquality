@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Check } from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import type { StatisticItem } from '@/types';
 import { DEFAULT_STATISTICS } from '@/services/defaults';
@@ -68,8 +69,9 @@ export default function AdminStatisticsPage() {
         </div>
 
         {success && (
-          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-[#15803d] text-sm font-semibold">
-            ✓ Statistics metrics saved successfully!
+          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-[#15803d] text-sm font-semibold flex items-center gap-2">
+            <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+            <span>Statistics metrics saved successfully!</span>
           </div>
         )}
 

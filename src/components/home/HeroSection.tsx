@@ -1,15 +1,46 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import type { HeroSectionData, HeroBenefit } from '@/types';
+import type { HeroSectionData, HeroBenefit, HeroPopupVideoItem } from '@/types';
 import { HeroBenefits } from '@/components/home/HeroBenefits';
+import { FarmVideoModal } from '@/components/home/FarmVideoModal';
+import { parseHeroPopupVideos } from '@/services/heroVideoService';
 
 interface HeroSectionProps {
   data: HeroSectionData;
   benefits: HeroBenefit[];
+  heroVideos?: HeroPopupVideoItem[];
 }
 
-export function HeroSection({ data, benefits }: HeroSectionProps) {
+export function HeroSection({ data, benefits, heroVideos }: HeroSectionProps) {
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+
+  // Dedicated hero popup videos configured separately by admin
+  const popupVideos =
+    heroVideos && heroVideos.length > 0
+      ? heroVideos
+      : parseHeroPopupVideos(data.secondary_cta_url, data.secondary_cta_text);
+
+  // Check if secondary button should act as the Hero Video popup trigger
+  const isVideoAction =
+    !data.secondary_cta_url ||
+    data.secondary_cta_url === '#farms' ||
+    data.secondary_cta_url === '#videos' ||
+    data.secondary_cta_url === '#farm-videos' ||
+    data.secondary_cta_url === '/farms' ||
+    data.secondary_cta_url.trim().startsWith('{') ||
+    data.secondary_cta_url.includes('youtu') ||
+    data.secondary_cta_url.includes('cloudinary') ||
+    data.secondary_cta_url.startsWith('/uploads/') ||
+    (data.secondary_cta_text && /video/i.test(data.secondary_cta_text));
+
+  const secondaryButtonLabel =
+    data.secondary_cta_text && data.secondary_cta_text !== 'Business Enquiry'
+      ? data.secondary_cta_text
+      : 'Farm Videos';
+
   return (
     <section className="relative min-h-[100svh] sm:min-h-[90vh] lg:min-h-[92vh] flex flex-col justify-end sm:justify-between pt-20 sm:pt-32 lg:pt-36 pb-8 sm:pb-10 lg:pb-12 overflow-hidden bg-gray-100">
       {/* Background Hero Image */}
@@ -51,15 +82,15 @@ export function HeroSection({ data, benefits }: HeroSectionProps) {
             {data.description}
           </p>
 
-          {/* Action Buttons - increased height */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 sm:pt-3">
+          {/* Action Buttons */}
+          <div className="flex flex-row flex-nowrap items-center gap-2 sm:gap-3 pt-2 sm:pt-3">
             <Link
               href={data.primary_cta_url || '/products'}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-3.5 rounded-xl sm:rounded-lg text-sm font-semibold text-white bg-[#0e3d23] hover:bg-[#15803d] transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 group text-center min-h-[48px] sm:min-h-[50px]"
+              className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2.5 sm:py-3.5 rounded-xl sm:rounded-lg text-xs sm:text-sm font-semibold text-white bg-[#0e3d23] hover:bg-[#15803d] transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 group text-center min-h-[40px] sm:min-h-[50px] flex-1 sm:flex-none whitespace-nowrap cursor-pointer"
             >
               <span>{data.primary_cta_text || 'Explore Our Products'}</span>
               <svg
-                className="w-4 h-4 transition-transform group-hover:translate-x-1 flex-shrink-0"
+                className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1 flex-shrink-0"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -68,12 +99,56 @@ export function HeroSection({ data, benefits }: HeroSectionProps) {
               </svg>
             </Link>
 
-            <Link
-              href={data.secondary_cta_url || '/enquiry'}
-              className="inline-flex items-center justify-center px-6 py-3.5 sm:py-3.5 rounded-xl sm:rounded-lg text-sm font-semibold text-[#0e3d23] bg-white border border-[#0e3d23]/40 hover:border-[#0e3d23] hover:bg-gray-50 transition-all duration-200 shadow-sm active:scale-95 text-center min-h-[48px] sm:min-h-[50px]"
-            >
-              {data.secondary_cta_text || 'Business Enquiry'}
-            </Link>
+            {isVideoAction ? (
+              <button
+                type="button"
+                onClick={() => setIsVideoModalOpen(true)}
+                className="inline-flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 sm:px-6 py-2.5 sm:py-3.5 rounded-xl sm:rounded-lg text-xs sm:text-sm font-semibold text-[#0e3d23] bg-white border border-[#0e3d23]/40 hover:border-[#0e3d23] hover:bg-emerald-50/50 transition-all duration-200 shadow-sm hover:shadow active:scale-95 text-center min-h-[40px] sm:min-h-[50px] group flex-1 sm:flex-none whitespace-nowrap cursor-pointer"
+              >
+                <svg
+                  className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#15803d] group-hover:scale-110 transition-transform flex-shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"
+                    fill="currentColor"
+                  />
+                  <rect x="2" y="6" width="14" height="12" rx="2" />
+                  <polygon points="7 9 11 12 7 15 7 9" fill="currentColor" stroke="none" />
+                </svg>
+                <span>{secondaryButtonLabel}</span>
+              </button>
+            ) : (
+              <Link
+                href={data.secondary_cta_url || '#farms'}
+                className="inline-flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 sm:px-6 py-2.5 sm:py-3.5 rounded-xl sm:rounded-lg text-xs sm:text-sm font-semibold text-[#0e3d23] bg-white border border-[#0e3d23]/40 hover:border-[#0e3d23] hover:bg-emerald-50/50 transition-all duration-200 shadow-sm hover:shadow active:scale-95 text-center min-h-[40px] sm:min-h-[50px] group flex-1 sm:flex-none whitespace-nowrap cursor-pointer"
+              >
+                <svg
+                  className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#15803d] group-hover:scale-110 transition-transform flex-shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"
+                    fill="currentColor"
+                  />
+                  <rect x="2" y="6" width="14" height="12" rx="2" />
+                  <polygon points="7 9 11 12 7 15 7 9" fill="currentColor" stroke="none" />
+                </svg>
+                <span>{secondaryButtonLabel}</span>
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -82,6 +157,14 @@ export function HeroSection({ data, benefits }: HeroSectionProps) {
       <div className="hidden sm:block relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-6 sm:mt-8">
         <HeroBenefits benefits={benefits} />
       </div>
+
+      {/* Popup Video Modal with Separate Hero Banner Videos */}
+      <FarmVideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        videos={popupVideos}
+        badgeTitle="Hero Farm Video"
+      />
     </section>
   );
 }

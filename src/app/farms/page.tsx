@@ -52,8 +52,11 @@ export default async function FarmsPage() {
             <span className="text-xs sm:text-sm font-bold tracking-widest text-[#15803d] uppercase">
               OUR FARMS & HARVESTING
             </span>
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight mt-2 mb-3">
-              Real Farms. Real People. Real Work.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mt-2 mb-3">
+              <span className="block sm:inline whitespace-normal sm:whitespace-nowrap">
+                Real Farms. Real People.
+              </span>{' '}
+              <span className="inline-block whitespace-nowrap">Real Work.</span>
             </h1>
             <div className="w-14 h-1 bg-[#f97316] rounded-full mb-4" />
             <p className="text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed">
@@ -63,7 +66,7 @@ export default async function FarmsPage() {
         </div>
 
         {/* Video Gallery Section */}
-        <FarmsSection videos={videos} />
+        <FarmsSection videos={videos} showHeader={false} />
 
         {/* Partner Farm Clusters */}
         <section className="py-20 bg-white">

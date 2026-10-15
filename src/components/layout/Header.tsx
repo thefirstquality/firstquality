@@ -69,8 +69,8 @@ export function Header({ enquireUrl = '/enquiry' }: HeaderProps) {
             })}
           </div>
 
-          {/* Enquire Now CTA Button */}
-          <div className="hidden sm:flex items-center">
+          {/* Desktop Action Area: Enquire Now CTA Button */}
+          <div className="hidden sm:flex items-center gap-3">
             <Link
               href={enquireUrl}
               className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534] active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md"
@@ -79,7 +79,7 @@ export function Header({ enquireUrl = '/enquiry' }: HeaderProps) {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile buttons: Enquire + Menu */}
           <div className="flex md:hidden items-center gap-2">
             <Link
               href={enquireUrl}

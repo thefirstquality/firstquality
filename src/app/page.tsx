@@ -9,14 +9,13 @@ import {
   getWhyChooseItems,
   getProductCategories,
   getProducts,
-  getSourcingPhilosophy,
-  getSourcingPillars,
   getFarmVideos,
   getTestimonials,
 } from '@/services/contentService';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { HeroSection } from '@/components/home/HeroSection';
+import { parseHeroPopupVideos } from '@/services/heroVideoService';
 import { AboutSection } from '@/components/home/AboutSection';
 import { StatsBanner } from '@/components/home/StatsBanner';
 import { WhyChooseSection } from '@/components/home/WhyChooseSection';
@@ -39,8 +38,6 @@ export default async function HomePage() {
     whyChoose,
     categories,
     products,
-    sourcing,
-    sourcingPillars,
     videos,
     testimonials,
   ] = await Promise.all([
@@ -53,8 +50,6 @@ export default async function HomePage() {
     getWhyChooseItems(),
     getProductCategories(),
     getProducts(),
-    getSourcingPhilosophy(),
-    getSourcingPillars(),
     getFarmVideos(),
     getTestimonials(),
   ]);
@@ -67,7 +62,11 @@ export default async function HomePage() {
       {/* Main Content */}
       <main className="flex-1">
         {/* 1. Hero Section & Benefits */}
-        <HeroSection data={hero} benefits={benefits} />
+        <HeroSection
+          data={hero}
+          benefits={benefits}
+          heroVideos={parseHeroPopupVideos(hero.secondary_cta_url, hero.secondary_cta_text)}
+        />
 
         {/* 2. About Section & Feature Cards */}
         <AboutSection data={about} features={features} />
@@ -85,8 +84,8 @@ export default async function HomePage() {
           whatsappNumber={settings.whatsapp_number}
         />
 
-        {/* 6. Our Sourcing Philosophy */}
-        <SourcingSection data={sourcing} pillars={sourcingPillars} />
+        {/* 6. Our Sourcing Philosophy - built directly into code */}
+        <SourcingSection />
 
         {/* 7. Our Farms Section */}
         <FarmsSection videos={videos} />

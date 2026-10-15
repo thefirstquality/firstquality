@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { Plus } from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ImageUploadField } from '@/components/admin/ImageUploadField';
 import { DeleteModal } from '@/components/admin/DeleteModal';
@@ -150,7 +151,8 @@ export default function AdminTestimonialsPage() {
             onClick={handleOpenAdd}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534] shadow-sm transition-all"
           >
-            <span>+ Add Testimonial</span>
+            <Plus className="w-4 h-4" />
+            <span>Add Testimonial</span>
           </button>
         </div>
 

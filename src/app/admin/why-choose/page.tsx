@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Check } from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import type { WhyChooseItem } from '@/types';
 import { DEFAULT_WHY_CHOOSE } from '@/services/defaults';
@@ -68,8 +69,9 @@ export default function AdminWhyChoosePage() {
         </div>
 
         {success && (
-          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-[#15803d] text-sm font-semibold">
-            ✓ Why Choose items saved successfully!
+          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-[#15803d] text-sm font-semibold flex items-center gap-2">
+            <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+            <span>Why Choose items saved successfully!</span>
           </div>
         )}
 

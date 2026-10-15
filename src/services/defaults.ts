@@ -12,6 +12,7 @@ import type {
   SourcingPillar,
   FarmVideoItem,
   TestimonialItem,
+  HeroPopupVideoItem,
 } from '@/types';
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
@@ -39,8 +40,8 @@ export const DEFAULT_HERO: HeroSectionData = {
   description: 'firstQuality sources fresh vegetables directly from farmers in Kerala, ensuring better freshness, consistent quality and a reliable supply for homes, retailers and businesses.',
   primary_cta_text: 'Explore Our Products',
   primary_cta_url: '/products',
-  secondary_cta_text: 'Business Enquiry',
-  secondary_cta_url: '/enquiry',
+  secondary_cta_text: 'Farm Videos',
+  secondary_cta_url: '#farms',
   background_image_url: '/images/hero-farm-produce.jpg',
   is_published: true,
 };
@@ -50,6 +51,17 @@ export const DEFAULT_HERO_BENEFITS: HeroBenefit[] = [
   { id: '2', title: 'Quality Checked', subtitle: 'Produce', icon_name: 'shield-check', sort_order: 2 },
   { id: '3', title: 'Retail & Wholesale', subtitle: 'Supply', icon_name: 'truck', sort_order: 3 },
   { id: '4', title: 'Supporting', subtitle: 'Local Farmers', icon_name: 'users', sort_order: 4 },
+];
+
+export const DEFAULT_HERO_POPUP_VIDEOS: HeroPopupVideoItem[] = [
+  {
+    id: 'hero-vid-1',
+    title: 'From Kerala Farms to Your Table',
+    duration: '1:00',
+    video_url: 'https://www.youtube.com/watch?v=LXb3EKWsInQ',
+    thumbnail_url: '/images/hero-farm-produce.jpg',
+    description: 'Experience how firstQuality works with local farmers across Kerala to harvest fresh, quality vegetables every day.',
+  },
 ];
 
 export const DEFAULT_ABOUT: AboutSectionData = {
@@ -114,8 +126,8 @@ export const DEFAULT_FARM_VIDEOS: FarmVideoItem[] = [
   },
   {
     id: 'v-2',
-    title: 'Harvesting Fresh Vegetables',
-    duration: '0:45',
+    title: 'Greenhouse Tomatoes',
+    duration: '0:38',
     video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     thumbnail_url: '/images/farm-tomatoes.jpg',
     is_featured: false,
@@ -130,6 +142,26 @@ export const DEFAULT_FARM_VIDEOS: FarmVideoItem[] = [
     thumbnail_url: '/images/farm-packing.jpg',
     is_featured: false,
     sort_order: 3,
+    is_published: true,
+  },
+  {
+    id: 'v-4',
+    title: 'Traditional Kerala Fields',
+    duration: '0:50',
+    video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    thumbnail_url: '/images/farmer-field.jpg',
+    is_featured: false,
+    sort_order: 4,
+    is_published: true,
+  },
+  {
+    id: 'v-5',
+    title: 'Sunrise Produce Quality',
+    duration: '0:42',
+    video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    thumbnail_url: '/images/hero-farm-produce.jpg',
+    is_featured: false,
+    sort_order: 5,
     is_published: true,
   },
 ];

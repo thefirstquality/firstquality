@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Check } from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import type { SiteSettings } from '@/types';
 import { DEFAULT_SITE_SETTINGS } from '@/services/defaults';
@@ -51,15 +52,16 @@ export default function AdminSettingsPage() {
     <AdminLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-extrabold text-gray-900">Site Settings & Database</h1>
+          <h1 className="text-2xl font-extrabold text-gray-900">Site Settings</h1>
           <p className="text-xs text-gray-500 mt-1">
-            Configure contact coordinates, WhatsApp numbers, footer details, and database schema
+            Configure contact coordinates, WhatsApp numbers, and footer details
           </p>
         </div>
 
         {success && (
-          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-[#15803d] text-sm font-semibold">
-            ✓ Site settings updated successfully!
+          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-[#15803d] text-sm font-semibold flex items-center gap-2">
+            <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+            <span>Site settings updated successfully!</span>
           </div>
         )}
 
@@ -164,29 +166,6 @@ export default function AdminSettingsPage() {
             </button>
           </div>
         </form>
-
-        {/* Supabase SQL Migration Helper */}
-        <div className="bg-[#0b2f1f] text-white p-6 sm:p-8 rounded-3xl shadow-xl space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-bold">Supabase Database Setup</h2>
-              <p className="text-xs text-emerald-200">
-                To connect your live Supabase project, execute the SQL migration script in your Supabase SQL Editor.
-              </p>
-            </div>
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-800 text-emerald-200">
-              schema.sql &amp; seed.sql ready
-            </span>
-          </div>
-
-          <div className="bg-black/40 p-4 rounded-2xl font-mono text-xs text-emerald-300 overflow-x-auto space-y-2">
-            <p>1. Open your project on supabase.com</p>
-            <p>2. Open SQL Editor -&gt; New Query</p>
-            <p>3. Copy and run the contents of <strong>supabase/schema.sql</strong></p>
-            <p>4. Run the contents of <strong>supabase/seed.sql</strong></p>
-            <p>5. Paste your Project URL and Anon Key into .env</p>
-          </div>
-        </div>
       </div>
     </AdminLayout>
   );

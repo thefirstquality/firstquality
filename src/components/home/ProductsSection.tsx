@@ -28,32 +28,24 @@ export function ProductsSection({
     );
   }, [products, selectedCategory, categories]);
 
+  const displayedProducts = useMemo(() => {
+    return filteredProducts.slice(0, 8);
+  }, [filteredProducts]);
+
 
   return (
     <section className="py-20 lg:py-24 bg-gradient-to-b from-white to-[#fbfdfb]" id="products">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header with Title, Accent Bar & View All Button */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
-          <div>
-            <span className="text-xs sm:text-sm font-bold tracking-widest text-[#15803d] uppercase">
-              OUR PRODUCE
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mt-1 mb-3">
-              Fresh and Quality Products
-            </h2>
-            {/* Orange Accent Line */}
-            <div className="w-14 h-1 bg-[#f97316] rounded-full" />
-          </div>
-
-          <div>
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-[#0b2f1f] bg-white border border-gray-200 hover:border-[#15803d] hover:bg-emerald-50/50 shadow-sm transition-all duration-200 group"
-            >
-              <span>View Full Catalog ({products.length})</span>
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </Link>
-          </div>
+        {/* Header with Title and Accent Bar */}
+        <div className="mb-8">
+          <span className="text-xs sm:text-sm font-bold tracking-widest text-[#15803d] uppercase">
+            OUR PRODUCE
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mt-1 mb-3">
+            Fresh and Quality Products
+          </h2>
+          {/* Orange Accent Line */}
+          <div className="w-14 h-1 bg-[#f97316] rounded-full" />
         </div>
 
         {/* Category Filter Tabs */}
@@ -91,81 +83,97 @@ export function ProductsSection({
         )}
 
         {/* Products Grid */}
-        {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-            {filteredProducts.map((item) => (
-              <div
-                key={item.id}
-                className="group flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-100 bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1 justify-between"
-              >
-                <div>
-                  {/* Product Image */}
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
-                    <Image
-                      src={item.image_url || '/images/cat-fresh-vegetables.jpg'}
-                      alt={item.name}
-                      fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      unoptimized={item.image_url?.startsWith('/images/')}
-                    />
+        {displayedProducts.length > 0 ? (
+          <div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+              {displayedProducts.map((item) => (
+                <div
+                  key={item.id}
+                  className="group flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-100 bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1 justify-between"
+                >
+                  <div>
+                    {/* Product Image */}
+                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
+                      <Image
+                        src={item.image_url || '/images/cat-fresh-vegetables.jpg'}
+                        alt={item.name}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        unoptimized={item.image_url?.startsWith('/images/')}
+                      />
 
-                    {/* In Stock Badge */}
-                    <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3">
-                      <span
-                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-sm ${
-                          item.in_stock
-                            ? 'bg-emerald-500 text-white'
-                            : 'bg-rose-500 text-white'
-                        }`}
-                      >
-                        {item.in_stock ? 'In Stock' : 'Out of Stock'}
-                      </span>
+                      {/* In Stock Badge */}
+                      <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3">
+                        <span
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-sm ${
+                            item.in_stock
+                              ? 'bg-emerald-500 text-white'
+                              : 'bg-rose-500 text-white'
+                          }`}
+                        >
+                          {item.in_stock ? 'In Stock' : 'Out of Stock'}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Product Content */}
+                    <div className="p-3 sm:p-5 flex flex-col">
+                      <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#15803d] transition-colors line-clamp-1 mb-1">
+                        {item.name}
+                      </h3>
+
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2">
+                        {item.unit && (
+                          <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded bg-gray-100 text-gray-700 font-semibold text-[10px] sm:text-[11px]">
+                            {item.unit}
+                          </span>
+                        )}
+                        {item.price_text && (
+                          <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded bg-emerald-50 text-[#15803d] font-bold text-[10px] sm:text-[11px]">
+                            {item.price_text}
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-[11px] sm:text-xs text-gray-600 line-clamp-2 leading-relaxed">
+                        {item.description}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Product Content */}
-                  <div className="p-3 sm:p-5 flex flex-col">
-                    <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#15803d] transition-colors line-clamp-1 mb-1">
-                      {item.name}
-                    </h3>
-
-                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2">
-                      {item.unit && (
-                        <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded bg-gray-100 text-gray-700 font-semibold text-[10px] sm:text-[11px]">
-                          {item.unit}
-                        </span>
-                      )}
-                      {item.price_text && (
-                        <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded bg-emerald-50 text-[#15803d] font-bold text-[10px] sm:text-[11px]">
-                          {item.price_text}
-                        </span>
-                      )}
-                    </div>
-
-                    <p className="text-[11px] sm:text-xs text-gray-600 line-clamp-2 leading-relaxed">
-                      {item.description}
-                    </p>
+                  {/* Product Action: Order via WhatsApp */}
+                  <div className="p-3 pt-0 sm:p-5 sm:pt-0">
+                    <a
+                      href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                        `Hello firstQuality, I would like to order: ${item.name}${item.unit ? ` (${item.unit})` : ''}${item.price_text ? ` - ${item.price_text}` : ''}. Please share availability and delivery details.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 sm:py-3 px-3 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20ba5a] transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 group/wa"
+                    >
+                      <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.128-.53-1.636-.687-2.73-2.336-2.812-2.446-.082-.11-1.025-1.36-1.025-2.593 0-1.233.649-1.84.88-2.091.231-.251.503-.314.671-.314.168 0 .336.002.483.009.155.008.363-.058.568.435.212.51.721 1.76.785 1.89.063.13.106.282.019.452-.086.17-.13.277-.257.424-.128.147-.268.328-.383.441-.128.125-.262.261-.113.518.15.257.666 1.096 1.431 1.777.986.877 1.817 1.15 2.074 1.278.257.127.408.106.56-.068.151-.174.648-.754.821-1.013.172-.258.345-.216.582-.128.237.087 1.504.709 1.763.838.258.13.431.194.495.302.064.108.064.629-.08 1.034z" />
+                      </svg>
+                      <span>Order via WhatsApp</span>
+                    </a>
                   </div>
                 </div>
+              ))}
+            </div>
 
-                {/* WhatsApp Order Action */}
-                <div className="p-3 pt-0 sm:p-5 sm:pt-0">
-                  <a
-                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-                      `Hello firstQuality, I would like to order: ${item.name} (${item.unit || 'Standard Pack'})`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 rounded-xl text-[11px] sm:text-xs font-bold text-[#15803d] bg-emerald-50 hover:bg-[#15803d] hover:text-white transition-all duration-200 shadow-sm active:scale-95"
-                  >
-                    <span>💬</span>
-                    <span className="hidden sm:inline">Order via WhatsApp</span>
-                    <span className="sm:hidden">WhatsApp</span>
-                  </a>
-                </div>
+            {/* Bottom View Full Catalog Button */}
+            {products.length > 8 && (
+              <div className="mt-12 text-center">
+                <Link
+                  href="/products"
+                  className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-2xl text-sm font-bold text-white bg-[#0e3d23] hover:bg-[#15803d] shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 group"
+                >
+                  <span>View All Catalog ({products.length} Products)</span>
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </Link>
               </div>
-            ))}
+            )}
           </div>
         ) : (
           <div className="text-center py-16 bg-gradient-to-b from-emerald-50/40 to-white rounded-3xl border border-emerald-100/80 p-8 shadow-sm">
