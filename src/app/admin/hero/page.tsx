@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { AlertTriangle, Clapperboard, Check } from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ImageUploadField } from '@/components/admin/ImageUploadField';
 import type { HeroSectionData, HeroBenefit } from '@/types';
@@ -200,7 +201,10 @@ export default function AdminHeroPage() {
 
         {errorMessage && (
           <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-semibold flex items-center justify-between">
-            <span>⚠️ {errorMessage}</span>
+            <span className="flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0" />
+              {errorMessage}
+            </span>
             <button
               onClick={() => setErrorMessage(null)}
               className="text-xs text-red-500 hover:text-red-700 font-bold"
@@ -211,8 +215,9 @@ export default function AdminHeroPage() {
         )}
 
         {heroSuccess && (
-          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-[#15803d] text-sm font-semibold">
-            ✓ Hero settings saved successfully to Supabase! Changes are live on the homepage.
+          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-[#15803d] text-sm font-semibold flex items-center gap-2">
+            <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+            <span>Hero settings saved successfully to Supabase! Changes are live on the homepage.</span>
           </div>
         )}
 
@@ -339,8 +344,9 @@ export default function AdminHeroPage() {
                     Controls the hero button that opens the popup video modal.
                   </p>
                 </div>
-                <span className="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
-                  🎬 Popup Video
+                <span className="inline-flex items-center gap-1.5 text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                  <Clapperboard className="w-3 h-3" />
+                  <span>Popup Video</span>
                 </span>
               </div>
 
@@ -363,7 +369,7 @@ export default function AdminHeroPage() {
                   className="inline-flex items-center justify-between w-full p-3 rounded-xl bg-white border border-emerald-300 hover:border-emerald-500 hover:shadow-xs text-xs font-bold text-emerald-900 transition group"
                 >
                   <span className="flex items-center gap-2">
-                    <span className="text-base">🎬</span>
+                    <Clapperboard className="w-4 h-4 text-[#15803d]" />
                     <span>Configure Hero Popup Video & Media</span>
                   </span>
                   <span className="text-emerald-700 group-hover:translate-x-1 transition-transform">
@@ -421,8 +427,9 @@ export default function AdminHeroPage() {
           </div>
 
           {benefitsSuccess && (
-            <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-[#15803d] text-sm font-semibold">
-              ✓ All 4 Benefit highlights saved successfully to Supabase!
+            <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-[#15803d] text-sm font-semibold flex items-center gap-2">
+              <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              <span>All 4 Benefit highlights saved successfully to Supabase!</span>
             </div>
           )}
 

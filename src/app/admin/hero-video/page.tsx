@@ -3,6 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import {
+  Clapperboard,
+  ExternalLink,
+  Sprout,
+  Check,
+  AlertTriangle,
+  X,
+  Clock,
+  Square,
+  Save,
+} from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { VideoUploadField } from '@/components/admin/VideoUploadField';
 import { ImageUploadField } from '@/components/admin/ImageUploadField';
@@ -160,7 +171,8 @@ export default function AdminHeroVideoPage() {
               <span>Popup Video</span>
             </div>
             <h1 className="text-2xl font-extrabold text-gray-900 flex items-center gap-2.5">
-              <span>🎬</span> Hero Banner Popup Video
+              <Clapperboard className="w-6 h-6 text-[#15803d]" />
+              <span>Hero Banner Popup Video</span>
             </h1>
             <p className="text-xs sm:text-sm text-gray-500 mt-1">
               Configure the dedicated video that opens in a popup when users click the <strong>&ldquo;{buttonLabel}&rdquo;</strong> button in the hero banner.
@@ -173,13 +185,15 @@ export default function AdminHeroVideoPage() {
               target="_blank"
               className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-semibold text-gray-700 transition"
             >
-              <span>👁️</span> Preview Live Site
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>Preview Live Site</span>
             </Link>
             <Link
               href="/admin/farms"
               className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-xs font-semibold text-emerald-800 transition"
             >
-              <span>🚜</span> Farm Section Videos &rarr;
+              <Sprout className="w-3.5 h-3.5" />
+              <span>Farm Section Videos &rarr;</span>
             </Link>
           </div>
         </div>
@@ -187,13 +201,15 @@ export default function AdminHeroVideoPage() {
         {/* Alerts */}
         {success && (
           <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-semibold flex items-center gap-2">
-            <span>✅</span> Hero Banner Popup Video saved successfully! Changes are live on the homepage hero button.
+            <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+            <span>Hero Banner Popup Video saved successfully! Changes are live on the homepage hero button.</span>
           </div>
         )}
 
         {errorMessage && (
           <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs sm:text-sm font-semibold flex items-center gap-2">
-            <span>⚠️</span> {errorMessage}
+            <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0" />
+            <span>{errorMessage}</span>
           </div>
         )}
 
@@ -282,10 +298,10 @@ export default function AdminHeroVideoPage() {
                           e.stopPropagation();
                           handleRemoveVideo(idx);
                         }}
-                        className="hover:text-red-600 ml-1"
+                        className="hover:text-red-600 ml-1 p-0.5 rounded"
                         title="Remove video clip"
                       >
-                        ✕
+                        <X className="w-3.5 h-3.5" />
                       </span>
                     )}
                   </button>
@@ -368,7 +384,7 @@ export default function AdminHeroVideoPage() {
                     <div className="flex items-center justify-between border-b border-emerald-500/20 pb-2.5">
                       <div className="flex items-center gap-2">
                         <span className="w-6 h-6 rounded-lg bg-emerald-500/20 flex items-center justify-center text-xs">
-                          🎬
+                          <Clapperboard className="w-3.5 h-3.5 text-emerald-400" />
                         </span>
                         <div>
                           <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">
@@ -427,8 +443,9 @@ export default function AdminHeroVideoPage() {
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
                           {currentVideo.duration && (
-                            <span className="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/80 text-[10px] font-semibold text-white/90">
-                              ⏱ {currentVideo.duration}
+                            <span className="inline-flex items-center gap-1 absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/80 text-[10px] font-semibold text-white/90">
+                              <Clock className="w-2.5 h-2.5" />
+                              <span>{currentVideo.duration}</span>
                             </span>
                           )}
 
@@ -455,9 +472,10 @@ export default function AdminHeroVideoPage() {
                       <button
                         type="button"
                         onClick={() => setPreviewPlaying(false)}
-                        className="w-full py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-gray-300 transition text-center cursor-pointer"
+                        className="inline-flex items-center justify-center gap-1.5 w-full py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-gray-300 transition text-center cursor-pointer"
                       >
-                        ⏹ Stop & Return to Preview
+                        <Square className="w-3 h-3 fill-current" />
+                        <span>Stop & Return to Preview</span>
                       </button>
                     )}
 
@@ -487,11 +505,12 @@ export default function AdminHeroVideoPage() {
                 {saving ? (
                   <>
                     <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Saving Changes...
+                    <span>Saving Changes...</span>
                   </>
                 ) : (
                   <>
-                    <span>💾</span> Save Hero Popup Video
+                    <Save className="w-4 h-4" />
+                    <span>Save Hero Popup Video</span>
                   </>
                 )}
               </button>

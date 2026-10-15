@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { Plus, Star, Clapperboard, Video } from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ImageUploadField } from '@/components/admin/ImageUploadField';
 import { VideoUploadField, isDirectVideoFile, extractYoutubeId } from '@/components/admin/VideoUploadField';
@@ -167,7 +168,8 @@ export default function AdminFarmsPage() {
             onClick={handleOpenAdd}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534] shadow-sm transition-all"
           >
-            <span>+ Add Video</span>
+            <Plus className="w-4 h-4" />
+            <span>Add Video</span>
           </button>
         </div>
 
@@ -189,18 +191,29 @@ export default function AdminFarmsPage() {
                   {/* Top badges */}
                   <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
                     {v.is_featured && (
-                      <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500 text-white shadow-sm">
-                        ★ Featured
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500 text-white shadow-sm">
+                        <Star className="w-2.5 h-2.5 fill-current" />
+                        <span>Featured</span>
                       </span>
                     )}
                     <span
-                      className={`px-2 py-0.5 rounded-full text-[9px] font-bold shadow-sm ${
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold shadow-sm ${
                         isDirectVideoFile(v.video_url)
                           ? 'bg-blue-600 text-white'
                           : 'bg-red-600 text-white'
                       }`}
                     >
-                      {isDirectVideoFile(v.video_url) ? '🎬 Uploaded File' : '▶️ YouTube'}
+                      {isDirectVideoFile(v.video_url) ? (
+                        <>
+                          <Clapperboard className="w-2.5 h-2.5" />
+                          <span>Uploaded File</span>
+                        </>
+                      ) : (
+                        <>
+                          <Video className="w-2.5 h-2.5" />
+                          <span>YouTube</span>
+                        </>
+                      )}
                     </span>
                   </div>
 

@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import imageCompression from 'browser-image-compression';
+import { Check, X, AlertTriangle, UploadCloud } from 'lucide-react';
 
 interface ImageUploadFieldProps {
   label: string;
@@ -166,7 +167,9 @@ export function ImageUploadField({
               {/* Upload success badge */}
               {uploadSuccess && (
                 <div className="absolute inset-0 bg-emerald-500/20 flex items-center justify-center">
-                  <span className="text-emerald-700 text-lg">✓</span>
+                  <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-md">
+                    <Check className="w-5 h-5" />
+                  </div>
                 </div>
               )}
               {/* Uploading overlay */}
@@ -178,10 +181,10 @@ export function ImageUploadField({
               <button
                 type="button"
                 onClick={handleRemove}
-                className="absolute top-1 right-1 w-6 h-6 rounded-full bg-rose-600 text-white text-xs flex items-center justify-center hover:bg-rose-700 shadow-md"
+                className="absolute top-1 right-1 w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center hover:bg-rose-700 shadow-md cursor-pointer"
                 title="Remove image"
               >
-                ✕
+                <X className="w-3.5 h-3.5" />
               </button>
             </div>
           ) : (
@@ -214,12 +217,16 @@ export function ImageUploadField({
 
           {/* Status text */}
           {uploading && (
-            <p className="text-xs text-[#15803d] font-medium animate-pulse">
-              ⬆ Uploading image... {progress}%
+            <p className="text-xs text-[#15803d] font-medium flex items-center gap-1.5 animate-pulse">
+              <UploadCloud className="w-4 h-4 animate-bounce" />
+              <span>Uploading image... {progress}%</span>
             </p>
           )}
           {uploadSuccess && !uploading && (
-            <p className="text-xs text-emerald-600 font-semibold">✓ Image uploaded successfully!</p>
+            <p className="text-xs text-emerald-600 font-semibold flex items-center gap-1.5">
+              <Check className="w-3.5 h-3.5" />
+              <span>Image uploaded successfully!</span>
+            </p>
           )}
           {!uploading && !uploadSuccess && (
             <p className="text-xs text-gray-400">
@@ -267,8 +274,9 @@ export function ImageUploadField({
 
           {/* Error */}
           {error && (
-            <div className="p-2 bg-rose-50 border border-rose-200 rounded-lg">
-              <p className="text-xs text-rose-600 font-medium">⚠ {error}</p>
+            <div className="p-2 bg-rose-50 border border-rose-200 rounded-lg flex items-center gap-1.5">
+              <AlertTriangle className="w-3.5 h-3.5 text-rose-600 flex-shrink-0" />
+              <p className="text-xs text-rose-600 font-medium">{error}</p>
             </div>
           )}
         </div>

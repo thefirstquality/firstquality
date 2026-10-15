@@ -2,6 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import {
+  Zap,
+  Globe,
+  Video,
+  Camera,
+  Share2,
+  X,
+  AlertTriangle,
+  Info,
+  Play,
+} from 'lucide-react';
+import {
   detectVideoPlatform,
   extractYoutubeId,
   extractInstagramCode,
@@ -60,21 +71,21 @@ export function VideoUploadField({
       case 'youtube':
         return {
           name: 'YouTube Video / Short',
-          icon: '🔴',
+          icon: Video,
           badgeClass: 'bg-red-50 text-red-700 border-red-200',
           hint: 'Detected valid YouTube link',
         };
       case 'instagram':
         return {
           name: 'Instagram Reel / Post',
-          icon: '🟣',
+          icon: Camera,
           badgeClass: 'bg-pink-50 text-pink-700 border-pink-200',
           hint: 'Detected valid Instagram Reel link',
         };
       case 'facebook':
         return {
           name: 'Facebook Video / Reel',
-          icon: '🔵',
+          icon: Share2,
           badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
           hint: 'Detected valid Facebook video link',
         };
@@ -84,6 +95,7 @@ export function VideoUploadField({
   };
 
   const platformDetails = getPlatformDetails();
+  const PlatformIcon = platformDetails?.icon;
   const embedUrl = getVideoEmbedUrl(inputUrl, false);
 
   return (
@@ -92,8 +104,9 @@ export function VideoUploadField({
         <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
           {label}
         </label>
-        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-          ⚡ Free-Tier Safe (No Direct Uploads)
+        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+          <Zap className="w-3 h-3 text-emerald-600" />
+          <span>Free-Tier Safe (No Direct Uploads)</span>
         </span>
       </div>
 
@@ -102,46 +115,50 @@ export function VideoUploadField({
         <button
           type="button"
           onClick={() => setSelectedPlatform('all')}
-          className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer text-center ${
+          className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center gap-1.5 ${
             selectedPlatform === 'all'
               ? 'bg-white text-gray-900 shadow-xs'
               : 'text-gray-500 hover:text-gray-900'
           }`}
         >
-          🌐 Any Link
+          <Globe className="w-3.5 h-3.5" />
+          <span>Any Link</span>
         </button>
         <button
           type="button"
           onClick={() => setSelectedPlatform('youtube')}
-          className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center gap-1 ${
+          className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center gap-1.5 ${
             selectedPlatform === 'youtube'
               ? 'bg-white text-red-600 shadow-xs'
               : 'text-gray-500 hover:text-red-600'
           }`}
         >
-          <span>🔴</span> YouTube
+          <Video className="w-3.5 h-3.5" />
+          <span>YouTube</span>
         </button>
         <button
           type="button"
           onClick={() => setSelectedPlatform('instagram')}
-          className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center gap-1 ${
+          className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center gap-1.5 ${
             selectedPlatform === 'instagram'
               ? 'bg-white text-pink-600 shadow-xs'
               : 'text-gray-500 hover:text-pink-600'
           }`}
         >
-          <span>🟣</span> Instagram
+          <Camera className="w-3.5 h-3.5" />
+          <span>Instagram</span>
         </button>
         <button
           type="button"
           onClick={() => setSelectedPlatform('facebook')}
-          className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center gap-1 ${
+          className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center gap-1.5 ${
             selectedPlatform === 'facebook'
               ? 'bg-white text-blue-600 shadow-xs'
               : 'text-gray-500 hover:text-blue-600'
           }`}
         >
-          <span>🔵</span> Facebook
+          <Share2 className="w-3.5 h-3.5" />
+          <span>Facebook</span>
         </button>
       </div>
 
@@ -167,20 +184,22 @@ export function VideoUploadField({
           <button
             type="button"
             onClick={() => handleUrlChange('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm font-bold p-1 cursor-pointer"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1 cursor-pointer"
             title="Clear"
+            aria-label="Clear video URL"
           >
-            ✕
+            <X className="w-3.5 h-3.5" />
           </button>
         )}
       </div>
 
       {/* Detected Platform Badge & Help */}
-      {platformDetails ? (
+      {platformDetails && PlatformIcon ? (
         <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-gray-50 border border-gray-100 text-xs">
           <div className="flex items-center gap-2">
-            <span className={`px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${platformDetails.badgeClass}`}>
-              {platformDetails.icon} {platformDetails.name}
+            <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${platformDetails.badgeClass}`}>
+              <PlatformIcon className="w-3 h-3" />
+              <span>{platformDetails.name}</span>
             </span>
             <span className="text-gray-600 text-[11px]">
               {platformDetails.hint}
@@ -196,12 +215,14 @@ export function VideoUploadField({
           </button>
         </div>
       ) : inputUrl ? (
-        <p className="text-[11px] text-amber-600 bg-amber-50 p-2 rounded-lg border border-amber-200">
-          ⚠️ Please ensure the URL is from <strong>YouTube</strong>, <strong>Instagram</strong>, or <strong>Facebook</strong>.
+        <p className="text-[11px] text-amber-600 bg-amber-50 p-2 rounded-lg border border-amber-200 flex items-center gap-1.5">
+          <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
+          <span>Please ensure the URL is from <strong>YouTube</strong>, <strong>Instagram</strong>, or <strong>Facebook</strong>.</span>
         </p>
       ) : (
-        <p className="text-[11px] text-gray-400">
-          💡 Paste a public link from <strong>YouTube (Videos or Shorts)</strong>, <strong>Instagram (Reels or Posts)</strong>, or <strong>Facebook (Videos or Reels)</strong>. Direct video uploads are disabled to save server storage and bandwidth.
+        <p className="text-[11px] text-gray-400 flex items-start gap-1.5">
+          <Info className="w-3.5 h-3.5 mt-0.5 text-gray-400 flex-shrink-0" />
+          <span>Paste a public link from <strong>YouTube (Videos or Shorts)</strong>, <strong>Instagram (Reels or Posts)</strong>, or <strong>Facebook (Videos or Reels)</strong>. Direct video uploads are disabled to save server storage and bandwidth.</span>
         </p>
       )}
 
@@ -210,14 +231,16 @@ export function VideoUploadField({
         <div className="mt-3 p-3 rounded-xl bg-gray-900 border border-gray-800 space-y-2">
           <div className="flex items-center justify-between text-xs text-gray-300">
             <span className="font-bold flex items-center gap-1.5">
-              <span>{platformDetails?.icon}</span> Live Player Embed Preview
+              {PlatformIcon && <PlatformIcon className="w-3.5 h-3.5" />}
+              <span>Live Player Embed Preview</span>
             </span>
             <button
               type="button"
               onClick={() => setShowPreview(false)}
-              className="text-gray-400 hover:text-white"
+              className="inline-flex items-center gap-1 text-gray-400 hover:text-white"
             >
-              ✕ Close
+              <X className="w-3.5 h-3.5" />
+              <span>Close</span>
             </button>
           </div>
           <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-black border border-white/10">

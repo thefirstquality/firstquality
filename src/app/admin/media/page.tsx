@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { Trash2 } from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ImageUploadField } from '@/components/admin/ImageUploadField';
 import { DeleteModal } from '@/components/admin/DeleteModal';
@@ -176,10 +177,11 @@ export default function AdminMediaPage() {
                 <button
                   type="button"
                   onClick={() => handleOpenDelete(asset)}
-                  className="absolute top-2 right-2 w-7 h-7 rounded-full bg-rose-600/90 hover:bg-rose-700 text-white flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity shadow-md"
+                  className="absolute top-2 right-2 w-7 h-7 rounded-full bg-rose-600/90 hover:bg-rose-700 text-white flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity shadow-md cursor-pointer"
                   title="Delete asset"
+                  aria-label="Delete asset"
                 >
-                  ✕
+                  <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
             ))}

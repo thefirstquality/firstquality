@@ -3,6 +3,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  FolderTree,
+  Package,
+  Plus,
+  X,
+  AlertTriangle,
+  ArrowRight,
+} from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ImageUploadField } from '@/components/admin/ImageUploadField';
 import { DeleteModal } from '@/components/admin/DeleteModal';
@@ -204,8 +212,8 @@ export default function AdminCategoriesPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xl">📁</span>
+            <div className="flex items-center gap-2.5 mb-1">
+              <FolderTree className="w-6 h-6 text-[#15803d]" />
               <h1 className="text-2xl font-extrabold text-gray-900">Categories</h1>
             </div>
             <p className="text-xs text-gray-500">
@@ -218,14 +226,17 @@ export default function AdminCategoriesPage() {
               href="/admin/products"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 shadow-sm transition-all"
             >
-              <span>🥦 Manage Products →</span>
+              <Package className="w-4 h-4 text-emerald-700" />
+              <span>Manage Products</span>
+              <ArrowRight className="w-3.5 h-3.5 text-gray-400" />
             </Link>
             <button
               type="button"
               onClick={handleOpenAdd}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534] shadow-sm transition-all"
             >
-              <span>+ Add Category</span>
+              <Plus className="w-4 h-4" />
+              <span>Add Category</span>
             </button>
           </div>
         </div>
@@ -311,7 +322,9 @@ export default function AdminCategoriesPage() {
           </div>
         ) : (
           <div className="bg-white rounded-3xl border border-gray-100 p-12 text-center shadow-sm">
-            <div className="text-4xl mb-3">📁</div>
+            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#15803d] flex items-center justify-center mx-auto mb-3">
+              <FolderTree className="w-6 h-6" />
+            </div>
             <h3 className="text-lg font-bold text-gray-900">No categories created yet</h3>
             <p className="text-sm text-gray-500 mt-1 max-w-md mx-auto">
               Create your first category (such as Fresh Vegetables, Organic Fruits, etc.) by clicking the button below.
@@ -321,7 +334,8 @@ export default function AdminCategoriesPage() {
               onClick={handleOpenAdd}
               className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534] shadow-sm transition-all"
             >
-              <span>+ Add First Category</span>
+              <Plus className="w-4 h-4" />
+              <span>Add First Category</span>
             </button>
           </div>
         )}
@@ -343,8 +357,9 @@ export default function AdminCategoriesPage() {
                 <button
                   onClick={() => setEditModalOpen(false)}
                   className="p-1 rounded-lg text-gray-400 hover:text-gray-600"
+                  aria-label="Close modal"
                 >
-                  ✕
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
@@ -394,8 +409,9 @@ export default function AdminCategoriesPage() {
 
                 {/* Save Error */}
                 {saveError && (
-                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 font-medium">
-                    ⚠️ {saveError}
+                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 font-medium flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-rose-600 flex-shrink-0" />
+                    <span>{saveError}</span>
                   </div>
                 )}
 
