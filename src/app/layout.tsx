@@ -71,13 +71,13 @@ export default function RootLayout({
       'Kerala-based vegetable sourcing and supply company connecting local farmers with households, retailers, and restaurants.',
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Vyppinrick',
+      addressLocality: 'Irinjalakuda, Thrissur',
       addressRegion: 'Kerala',
       addressCountry: 'India',
     },
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+91 98765 43100',
+      telephone: '+91 75939 33225',
       contactType: 'customer service',
       areaServed: 'IN',
       availableLanguage: ['en', 'ml'],

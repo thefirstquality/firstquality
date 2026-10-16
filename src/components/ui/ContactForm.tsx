@@ -120,7 +120,7 @@ export function ContactForm({
           </label>
           <input
             type="tel"
-            placeholder="+91 98765 43210"
+            placeholder="+91 75939 33225"
             {...register('phone')}
             className={`w-full px-4 py-3 rounded-xl border text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#15803d] transition-all ${
               errors.phone ? 'border-red-400 bg-red-50/20' : 'border-gray-200 bg-white'

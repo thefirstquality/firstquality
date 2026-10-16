@@ -1,18 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 interface CtaBannerProps {
   whatsappNumber?: string;
   whatsappUrl?: string;
 }
 
-export function CtaBanner({ whatsappNumber = '919876543100', whatsappUrl }: CtaBannerProps) {
+export function CtaBanner({ whatsappNumber, whatsappUrl }: CtaBannerProps) {
   const finalWhatsappUrl =
-    whatsappUrl ||
-    `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+    buildWhatsAppUrl(
+      whatsappNumber,
       'Hello firstQuality, I would like to get a quote for fresh vegetable supply.'
-    )}`;
+    );
 
   return (
     <section className="relative py-8 sm:py-12 lg:py-14 min-h-[240px] sm:min-h-[280px] flex items-center justify-center overflow-hidden bg-gray-100">

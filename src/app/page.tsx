@@ -10,7 +10,6 @@ import {
   getProductCategories,
   getProducts,
   getFarmVideos,
-  getTestimonials,
 } from '@/services/contentService';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -22,7 +21,6 @@ import { WhyChooseSection } from '@/components/home/WhyChooseSection';
 import { ProductsSection } from '@/components/home/ProductsSection';
 import { SourcingSection } from '@/components/home/SourcingSection';
 import { FarmsSection } from '@/components/home/FarmsSection';
-import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { CtaBanner } from '@/components/home/CtaBanner';
 
 export const instant = false;
@@ -39,7 +37,6 @@ export default async function HomePage() {
     categories,
     products,
     videos,
-    testimonials,
   ] = await Promise.all([
     getSiteSettings(),
     getHeroSection(),
@@ -51,7 +48,6 @@ export default async function HomePage() {
     getProductCategories(),
     getProducts(),
     getFarmVideos(),
-    getTestimonials(),
   ]);
 
   return (
@@ -91,9 +87,7 @@ export default async function HomePage() {
         <FarmsSection videos={videos} />
 
         {/* 8. Customer Testimonials */}
-        {/* <TestimonialsSection testimonials={testimonials} /> */}
-
-        {/* 9. Business Enquiry CTA Banner */}
+        {/* 8. Business Enquiry CTA Banner */}
         <CtaBanner
           whatsappNumber={settings.whatsapp_number}
           whatsappUrl={settings.whatsapp_url}
