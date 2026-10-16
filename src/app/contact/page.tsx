@@ -4,6 +4,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { getSiteSettings } from '@/services/contentService';
 import { ContactForm } from '@/components/ui/ContactForm';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 export const metadata: Metadata = {
   title: 'Contact Us | firstQuality Kerala',
@@ -86,7 +87,7 @@ export default async function ContactPage() {
 
                   <div className="pt-4">
                     <a
-                      href={settings.whatsapp_url || `https://wa.me/${settings.whatsapp_number}`}
+                      href={buildWhatsAppUrl(settings.whatsapp_number, 'Hello firstQuality, I would like to inquire about your fresh vegetable supply.')}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold text-[#0b2f1f] bg-green-400 hover:bg-green-300 transition-all shadow-md"

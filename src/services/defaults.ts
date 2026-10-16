@@ -17,17 +17,17 @@ import type {
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   site_name: 'firstQuality',
-  tagline: 'Fresh Vegetables, Better Living.',
+  tagline: 'Fresh Vegetables, quality first.',
   logo_url: '/images/logo.png',
-  phone: '+91 98765 43100',
-  whatsapp_number: '919876543100',
-  email: 'info@firstquality.in',
-  address: 'Vyppinrick, Kerala, India',
+  phone: '+91 75939 33225',
+  whatsapp_number: '75939 33225',
+  email: 'raju@thefirstquality.in',
+  address: 'Main Road Opp. Kaacheri Valappu Irinjalakuda, Thrissur 680121',
   location_name: 'Kerala',
   instagram_url: 'https://instagram.com/firstquality',
   facebook_url: 'https://facebook.com/firstquality',
   youtube_url: 'https://youtube.com/firstquality',
-  whatsapp_url: 'https://wa.me/919876543100',
+  whatsapp_url: 'https://wa.me/917593933225',
   footer_description: 'Fresh vegetables, quality first. We work directly with local farmers to bring fresh and nutritious produce to homes, retailers and businesses across Kerala.',
   copyright_text: '© 2026 firstQuality. All rights reserved.',
 };

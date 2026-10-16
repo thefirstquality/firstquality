@@ -1,6 +1,20 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
+
+function triggerRevalidation() {
+  try {
+    revalidatePath('/');
+    revalidatePath('/contact');
+    revalidatePath('/products');
+    revalidatePath('/farms');
+    revalidatePath('/about');
+    revalidatePath('/enquiry');
+  } catch {
+    // Ignore in non-cached contexts
+  }
+}
 
 // Tables allowed for Admin CRUD operations
 const ALLOWED_TABLES = [
@@ -67,25 +81,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid table or data payload' }, { status: 400 });
     }
 
+    const payload = { ...data };
+    if (table === 'site_settings' && payload.whatsapp_number) {
+      payload.whatsapp_url = buildWhatsAppUrl(payload.whatsapp_number);
+    }
+
     const admin = createAdminSupabaseClient();
     if (!admin) {
       return NextResponse.json({
         success: true,
-        data: { ...data, id: `local-${Date.now()}` },
+        data: { ...payload, id: `local-${Date.now()}` },
         note: 'Local simulation. To persist permanently, connect Supabase.',
       });
     }
 
-    const { data: inserted, error } = await admin.from(table).insert(data).select().single();
+    const { data: inserted, error } = await admin.from(table).insert(payload).select().single();
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    try {
-      revalidatePath('/');
-    } catch {
-      // Revalidation may fail silently in non-cached contexts
-    }
+    triggerRevalidation();
 
     return NextResponse.json({ success: true, data: inserted });
   } catch (err: unknown) {
@@ -103,11 +118,16 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Invalid update payload' }, { status: 400 });
     }
 
+    const payload = { ...data };
+    if (table === 'site_settings' && payload.whatsapp_number) {
+      payload.whatsapp_url = buildWhatsAppUrl(payload.whatsapp_number);
+    }
+
     const admin = createAdminSupabaseClient();
     if (!admin) {
       return NextResponse.json({
         success: true,
-        data: { ...data, id },
+        data: { ...payload, id },
         note: 'Local simulation.',
       });
     }
@@ -120,15 +140,11 @@ export async function PUT(request: Request) {
       if (existing && existing.length > 0) {
         targetId = existing[0].id;
       } else {
-        const { data: inserted, error: insertErr } = await admin.from(table).insert(data).select().single();
+        const { data: inserted, error: insertErr } = await admin.from(table).insert(payload).select().single();
         if (insertErr) {
           return NextResponse.json({ error: insertErr.message }, { status: 500 });
         }
-        try {
-          revalidatePath('/');
-        } catch {
-          // ignore
-        }
+        triggerRevalidation();
         return NextResponse.json({ success: true, data: [inserted] });
       }
     }
@@ -137,16 +153,12 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Record ID is required for update' }, { status: 400 });
     }
 
-    const { data: updated, error } = await admin.from(table).update(data).eq('id', targetId).select();
+    const { data: updated, error } = await admin.from(table).update(payload).eq('id', targetId).select();
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    try {
-      revalidatePath('/');
-    } catch {
-      // ignore
-    }
+    triggerRevalidation();
 
     return NextResponse.json({ success: true, data: updated });
   } catch (err: unknown) {

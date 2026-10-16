@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import type { CartItem } from '@/context/CartContext';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 interface WhatsAppOrderModalProps {
   isOpen: boolean;
@@ -103,11 +104,8 @@ _Please confirm item availability and delivery schedule. Thank you!_`;
         console.warn('Background enquiry sync:', err);
       }
 
-      // 4. Clean WhatsApp phone number (strip spaces, symbols, plus sign)
-      const cleanWaNumber = (whatsappNumber || '919876543100').replace(/[^0-9]/g, '');
-
-      // 5. Construct WhatsApp link and open
-      const waUrl = `https://wa.me/${cleanWaNumber}?text=${encodeURIComponent(message)}`;
+      // 4. Construct WhatsApp link using admin configured WhatsApp number and open
+      const waUrl = buildWhatsAppUrl(whatsappNumber, message);
       window.open(waUrl, '_blank');
 
       if (onOrderSuccess) {
@@ -203,7 +201,7 @@ _Please confirm item availability and delivery schedule. Thank you!_`;
                 required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="e.g. +91 98765 43210"
+                placeholder="e.g. +91 75939 33225"
                 className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#15803d] transition-all bg-white"
               />
             </div>

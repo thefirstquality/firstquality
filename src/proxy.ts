@@ -4,7 +4,19 @@ import type { NextRequest } from 'next/server';
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Only protect admin routes
+  // Protect admin API routes (except auth login)
+  if (pathname.startsWith('/api/admin')) {
+    if (pathname === '/api/admin/auth') {
+      return NextResponse.next();
+    }
+    const hasAdminSession = request.cookies.has('admin_session');
+    if (!hasAdminSession) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    return NextResponse.next();
+  }
+
+  // Protect admin pages
   if (pathname.startsWith('/admin')) {
     const isLoginPage = pathname === '/admin/login';
     const hasAdminSession = request.cookies.has('admin_session');
@@ -26,5 +38,5 @@ export default function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/api/admin/:path*'],
 };

@@ -5,6 +5,7 @@ import { Check } from 'lucide-react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import type { SiteSettings } from '@/types';
 import { DEFAULT_SITE_SETTINGS } from '@/services/defaults';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SiteSettings>(DEFAULT_SITE_SETTINGS);
@@ -30,13 +31,17 @@ export default function AdminSettingsPage() {
     setSuccess(false);
 
     try {
+      const payload = {
+        ...settings,
+        whatsapp_url: buildWhatsAppUrl(settings.whatsapp_number),
+      };
       await fetch('/api/admin/content', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           table: 'site_settings',
           id: settings.id,
-          data: settings,
+          data: payload,
         }),
       });
       setSuccess(true);
@@ -114,7 +119,14 @@ export default function AdminSettingsPage() {
               <input
                 type="text"
                 value={settings.whatsapp_number}
-                onChange={(e) => setSettings({ ...settings, whatsapp_number: e.target.value })}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSettings({
+                    ...settings,
+                    whatsapp_number: val,
+                    whatsapp_url: buildWhatsAppUrl(val),
+                  });
+                }}
                 className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#15803d]"
               />
             </div>

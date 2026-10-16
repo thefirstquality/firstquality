@@ -13,9 +13,9 @@ export function Footer({ settings }: FooterProps) {
   const [quickLinksOpen, setQuickLinksOpen] = useState(false);
   const [companyOpen, setCompanyOpen] = useState(false);
 
-  const address = settings?.address || 'Vyppinrick, Kerala, India';
-  const phone = settings?.phone || '+91 98765 43100';
-  const emailContact = settings?.email || 'info@firstquality.in';
+  const address = settings?.address || 'Main Road Opp. Kaacheri Valappu Irinjalakuda, Thrissur 680121';
+  const phone = settings?.phone || '+91 75939 33225';
+  const emailContact = settings?.email || 'raju@thefirstquality.in';
   const footerDescription =
     settings?.footer_description ||
     'Fresh vegetables, quality first. We work directly with local farmers to bring fresh and nutritious produce to homes, retailers and businesses across Kerala.';

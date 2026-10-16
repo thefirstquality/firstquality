@@ -13,6 +13,7 @@ import {
   DEFAULT_CATEGORIES,
 } from '@/services/contentService';
 import { ProductCardItem } from '@/components/products/ProductCardItem';
+import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
@@ -118,9 +119,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     Order or Enquire for this Category
                   </Link>
                   <a
-                    href={`https://wa.me/${settings.whatsapp_number}?text=${encodeURIComponent(
+                    href={buildWhatsAppUrl(
+                      settings.whatsapp_number,
                       `Hello, I would like to order from the ${category.name} category.`
-                    )}`}
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-6 py-3 rounded-xl text-sm font-semibold text-[#15803d] bg-white border border-[#15803d] hover:bg-emerald-50 transition-all"
