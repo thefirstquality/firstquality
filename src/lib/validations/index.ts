@@ -10,7 +10,7 @@ export const enquiryFormSchema = z.object({
     .optional()
     .or(z.literal('')),
   enquiryType: z
-    .enum(['retail', 'wholesale', 'restaurant', 'household', 'farmer', 'other'])
+    .enum(['retail', 'wholesale', 'export', 'restaurant', 'household', 'farmer', 'other'])
     .optional(),
   message: z.string().optional().or(z.literal('')),
 });

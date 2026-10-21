@@ -11,6 +11,7 @@ export interface SiteSettings {
   location_name: string;
   instagram_url?: string;
   facebook_url?: string;
+  linkedin_url?: string;
   youtube_url?: string;
   whatsapp_url?: string;
   footer_description?: string;
@@ -183,7 +184,7 @@ export interface BusinessEnquiry {
   business_name?: string;
   phone: string;
   email: string;
-  enquiry_type: 'retail' | 'wholesale' | 'restaurant' | 'household' | 'farmer' | 'other';
+  enquiry_type: 'retail' | 'wholesale' | 'export' | 'restaurant' | 'household' | 'farmer' | 'other';
   message: string;
   status: 'new' | 'contacted' | 'resolved' | 'archived';
   created_at: string;

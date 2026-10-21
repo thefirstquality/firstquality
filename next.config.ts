@@ -28,6 +28,15 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  async redirects() {
+    return [
+      {
+        source: '/export',
+        destination: '/exports',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

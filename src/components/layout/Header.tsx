@@ -26,6 +26,8 @@ export function Header({ enquireUrl = '/enquiry' }: HeaderProps) {
     { name: 'Home', href: '/' },
     { name: 'About Us', href: '/about' },
     { name: 'Products', href: '/products' },
+    { name: 'Wholesale', href: '/wholesale' },
+    { name: 'Exports', href: '/exports' },
     { name: 'Our Farms', href: '/farms' },
     { name: 'Contact Us', href: '/contact' },
   ];
@@ -47,7 +49,7 @@ export function Header({ enquireUrl = '/enquiry' }: HeaderProps) {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-7 lg:space-x-9">
+          <div className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-7">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (

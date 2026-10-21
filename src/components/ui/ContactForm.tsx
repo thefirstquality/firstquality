@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { enquiryFormSchema, type EnquiryFormValues } from '@/lib/validations';
 
 interface ContactFormProps {
-  defaultEnquiryType?: 'retail' | 'wholesale' | 'restaurant' | 'household' | 'farmer' | 'other';
+  defaultEnquiryType?: 'retail' | 'wholesale' | 'export' | 'restaurant' | 'household' | 'farmer' | 'other';
   buttonText?: string;
 }
 
@@ -101,11 +101,11 @@ export function ContactForm({
         {/* Business Name */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Business / Restaurant Name (Optional)
+            Business / Company Name (Optional)
           </label>
           <input
             type="text"
-            placeholder="e.g. Malabar Spice Kitchen"
+            placeholder="e.g. Malabar Spice Kitchen / Global Imports LLC"
             {...register('businessName')}
             className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#15803d] transition-all"
           />
@@ -160,6 +160,7 @@ export function ContactForm({
           className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#15803d] transition-all"
         >
           <option value="wholesale">Wholesale Supply (Retailers & Supermarkets)</option>
+          <option value="export">International Export Enquiry</option>
           <option value="restaurant">Restaurant & Catering Supply</option>
           <option value="retail">Retail / Household Delivery</option>
           <option value="farmer">Farmer Partnership / Sourcing</option>
