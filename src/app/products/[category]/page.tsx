@@ -55,9 +55,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
 
-      <main className="flex-1 pt-28">
+      <main className="flex-1">
         {/* Category Header */}
-        <div className="py-14 bg-gradient-to-b from-[#eaf6ee] to-white border-b border-gray-100">
+        <div className="pt-32 sm:pt-36 pb-14 bg-gradient-to-b from-[#eaf6ee] to-white border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
             <nav className="flex items-center space-x-2 text-xs font-semibold text-gray-500 mb-4 uppercase tracking-wider">

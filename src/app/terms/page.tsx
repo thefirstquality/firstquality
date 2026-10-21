@@ -17,14 +17,19 @@ export default async function TermsPage() {
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
 
-      <main className="flex-1 pt-28 pb-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
-            Terms & Conditions
-          </h1>
-          <p className="text-xs text-gray-500 mb-8 uppercase tracking-wider">
-            Effective Date: January 2024
-          </p>
+      <main className="flex-1 pb-20">
+        <div className="pt-32 sm:pt-36 pb-12 bg-gradient-to-b from-[#eaf6ee] to-white border-b border-gray-100">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
+              Terms & Conditions
+            </h1>
+            <p className="text-xs text-gray-500 uppercase tracking-wider">
+              Effective Date: January 2026
+            </p>
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
           <div className="prose prose-emerald max-w-none text-gray-700 space-y-6 leading-relaxed">
             <p>

@@ -11,6 +11,8 @@ function triggerRevalidation() {
     revalidatePath('/farms');
     revalidatePath('/about');
     revalidatePath('/enquiry');
+    revalidatePath('/wholesale');
+    revalidatePath('/exports');
   } catch {
     // Ignore in non-cached contexts
   }
@@ -153,7 +155,22 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Record ID is required for update' }, { status: 400 });
     }
 
-    const { data: updated, error } = await admin.from(table).update(payload).eq('id', targetId).select();
+    let { data: updated, error } = await admin.from(table).update(payload).eq('id', targetId).select();
+    
+    // Fallback if linkedin_url column is not yet migrated in Supabase
+    if (error && error.code === 'PGRST204' && table === 'site_settings' && 'linkedin_url' in payload) {
+      const { linkedin_url: _unused, ...fallbackPayload } = payload;
+      const retry = await admin.from(table).update(fallbackPayload).eq('id', targetId).select();
+      if (!retry.error) {
+        triggerRevalidation();
+        return NextResponse.json({
+          success: true,
+          data: retry.data,
+          warning: 'Saved settings. To persist LinkedIn URL in database, please run the SQL migration in supabase/add_linkedin_url.sql.',
+        });
+      }
+    }
+
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }

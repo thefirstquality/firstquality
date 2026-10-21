@@ -28,9 +28,9 @@ export default async function ProductsPage() {
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
 
-      <main className="flex-1 pt-28">
+      <main className="flex-1">
         {/* Banner */}
-        <div className="py-14 bg-gradient-to-b from-[#eaf6ee] to-white border-b border-gray-100">
+        <div className="pt-32 sm:pt-36 pb-14 bg-gradient-to-b from-[#eaf6ee] to-white border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <span className="text-xs sm:text-sm font-bold tracking-widest text-[#15803d] uppercase">
               OUR PRODUCE CATALOG

@@ -18,6 +18,7 @@ create table if not exists site_settings (
   location_name text default 'Kerala',
   instagram_url text default 'https://instagram.com/firstquality',
   facebook_url text default 'https://facebook.com/firstquality',
+  linkedin_url text default 'https://linkedin.com/company/firstquality',
   youtube_url text default 'https://youtube.com/firstquality',
   whatsapp_url text default 'https://wa.me/919876543100',
   footer_description text default 'Fresh vegetables, quality first. We work directly with local farmers to bring fresh and nutritious produce to homes, retailers and businesses across Kerala.',

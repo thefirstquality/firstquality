@@ -156,6 +156,80 @@ export default function AdminSettingsPage() {
             </div>
           </div>
 
+          <h2 className="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3 pt-4">
+            Social Media & Messaging Links
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                Instagram Profile URL
+              </label>
+              <input
+                type="url"
+                placeholder="https://instagram.com/firstquality"
+                value={settings.instagram_url || ''}
+                onChange={(e) => setSettings({ ...settings, instagram_url: e.target.value })}
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#15803d]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                Facebook Page URL
+              </label>
+              <input
+                type="url"
+                placeholder="https://facebook.com/firstquality"
+                value={settings.facebook_url || ''}
+                onChange={(e) => setSettings({ ...settings, facebook_url: e.target.value })}
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#15803d]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                LinkedIn Company URL
+              </label>
+              <input
+                type="url"
+                placeholder="https://linkedin.com/company/firstquality"
+                value={settings.linkedin_url || ''}
+                onChange={(e) => setSettings({ ...settings, linkedin_url: e.target.value })}
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#15803d]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                YouTube Channel URL
+              </label>
+              <input
+                type="url"
+                placeholder="https://youtube.com/firstquality"
+                value={settings.youtube_url || ''}
+                onChange={(e) => setSettings({ ...settings, youtube_url: e.target.value })}
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#15803d]"
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                WhatsApp Chat Link
+              </label>
+              <input
+                type="url"
+                placeholder="https://wa.me/917593933225"
+                value={settings.whatsapp_url || ''}
+                onChange={(e) => setSettings({ ...settings, whatsapp_url: e.target.value })}
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#15803d]"
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                Auto-generated from WhatsApp Number, or you can provide a custom wa.me chat link.
+              </p>
+            </div>
+          </div>
+
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
               Footer Description

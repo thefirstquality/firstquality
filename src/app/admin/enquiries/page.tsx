@@ -94,6 +94,7 @@ export default function AdminEnquiriesPage() {
             >
               <option value="all">All Types</option>
               <option value="wholesale">Wholesale</option>
+              <option value="export">Export</option>
               <option value="restaurant">Restaurant</option>
               <option value="retail">Retail</option>
               <option value="farmer">Farmer</option>
